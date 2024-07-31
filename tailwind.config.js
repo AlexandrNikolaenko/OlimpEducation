@@ -12,6 +12,20 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      colors: {
+        'super-light': '#EAC8FE',
+        'medium': '#9747FF',
+        'light-main': '#3E004E',
+        'main': '#220629',
+        'bright': '#FF5C00'
+      },
+      fontFamily: {
+        'logo': ['"Caesar Dressing"', 'sans-serif'],
+        'title': ['"Abhaya Libre"'],
+        'help': ['"Yeseva One"'],
+        'sans': ['"Tenor sans"', 'sans-serif'],
+        'serif': ['Lora']
+      },
     },
   },
   plugins: [],

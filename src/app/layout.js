@@ -1,7 +1,6 @@
-// import { Inter } from "next/font/google";
 import "./globals.css";
-
-// const inter = Inter({ subsets: ["latin"] });
+import Header from "./components/header";
+import Footer from "./components/footer";
 
 export const metadata = {
   title: "OlimpEducation",
@@ -9,9 +8,15 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  
+  
   return (
-    <html lang="ru">
-      <body>{children}</body>
+    <html className="scpoll-smooth">
+      <body className="bg-main text-white">
+        <Header/>
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
