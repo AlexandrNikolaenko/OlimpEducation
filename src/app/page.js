@@ -20,7 +20,6 @@ export default function Home() {
         </div>
       </section>
       <ChoiceAndTasks />
-      <Link href={'/abouttags'}></Link>
     </>
   );
 }
