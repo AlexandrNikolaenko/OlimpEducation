@@ -21,10 +21,11 @@ export default function ChoiceAndTasks(){
     let [criteria, setCriteria] = useState({class: 8, hardLevel: 1, tags: ['расчёт']});
     let [choiceClass, setChoiceClass] = useState(8);
     let [choiceLevel, setChoiceLevel] = useState(1);
+    let [choiceTag, setChoiceTag] = useState(['расчёт']); 
 
     return (
         <>
-        <section className="flex h-screen py-[100px] items-center border-b-light-main border-b-[1px] bg-bottom bg-no-repeat bg-cover" style={{backgroundImage: 'url(SecondFon.png)'}}>
+        <section id='choice-section' className="flex h-screen py-[100px] items-center border-b-light-main border-b-[1px] bg-bottom bg-no-repeat bg-cover" style={{backgroundImage: 'url(SecondFon.png)'}}>
             <div className="wrapper mx-auto flex items-center">
             <div className="w-[566px] flex flex-col gap-5">
             <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите класс</p>
@@ -42,12 +43,12 @@ export default function ChoiceAndTasks(){
             </div>
             <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите интересующие теги</p>
             <ul className="w-full flex flex-wrap gap-2 h-[245px] overflow-y-scroll">
-                {tags.map(tag => <li key={tag.id}><button className="font-serif text-xl font-normal py-1 px-3 rounded-[10px] bg-medium" onClick={() => makeChoiceTags(tag.tagName)}>{tag.tagName}</button></li>)}
+                {tags.map(tag => <li key={tag.id}> {choiceTag.includes(tag.tagName) ? <button className="font-serif text-xl font-normal py-1 px-3 rounded-[10px] bg-light-main" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.filter((elem) => elem != tag.tagName))}}>{tag.tagName}</button> : <button className="font-serif text-xl font-normal py-1 px-3 rounded-[10px] bg-medium" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.concat(tag.tagName))}}>{tag.tagName}</button>}</li>)}
             </ul>
             <Link href='/' className="font-serif text-xl font-normal text-bright">Подробнее про теги</Link>
-            <button className="font-sans text-2xl/[25px] font-normal tracking-[0.02em] px-[30px] py-2.5 bg-bright rounded-[10px] w-max hover:bg-light-main focus:bg-light-main transition-colors duration-500 " onClick={() => {
+            <button className="font-sans text-2xl/[25px] font-normal tracking-[0.02em] px-[30px] py-2.5 bg-bright rounded-[10px] w-max hover:bg-light-main transition-colors duration-500 " onClick={() => {
                     setCriteria({class: otherCriteria.class, hardLevel: otherCriteria.hardLevel, tags: choiceTags});
-                    console.log(criteria);
+                    document.getElementById('data-section').scrollIntoView({behavior: 'smooth'});
                 }}>Найти</button>
             </div>
             <div className="flex flex-col gap-7">
@@ -57,7 +58,7 @@ export default function ChoiceAndTasks(){
             </div>
             
         </section>
-        <section className="wrapper mx-auto py-[60px] bg-local min-h-screen bg-center bg-no-repeat flex flex-col  gap-y-4" style={{backgroundImage: 'url(ThirdFon.png)'}}>
+        <section id='data-section' className="wrapper mx-auto py-[60px] bg-local min-h-screen bg-center bg-no-repeat flex flex-col  gap-y-4" style={{backgroundImage: 'url(ThirdFon.png)'}}>
             <input placeholder="Найти по ID" className="px-7 bg-transparent py-2.5 rounded-[10px] border-medium border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
             <p className="font-sans text-2xl/[25px] tracking-[0.02em]">По вашему запросу были найдены следующие задачи:</p>
             <TaskList _class={criteria.class} level={criteria.hardLevel} tags={criteria.tags}/>
