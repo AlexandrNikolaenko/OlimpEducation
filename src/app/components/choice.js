@@ -25,7 +25,7 @@ export default function ChoiceAndTasks(){
 
     return (
         <>
-        <section id='choice-section' className="flex h-screen py-[100px] items-center border-b-light-main border-b-[1px] bg-bottom bg-no-repeat bg-cover" style={{backgroundImage: 'url(SecondFon.png)'}}>
+        <section id='choice-section' className="flex h-screen py-[100px] items-center border-b-light-main border-b-[1px] bg-top bg-no-repeat bg-cover bg-fixed" style={{backgroundImage: 'url(SecondFon.png)'}}>
             <div className="wrapper mx-auto flex items-center">
             <div className="w-[566px] flex flex-col gap-5">
             <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите класс</p>

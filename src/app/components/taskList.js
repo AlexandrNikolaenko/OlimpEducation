@@ -8,11 +8,11 @@ function CreateTask(task){
     return (
         <li key={task._id} className="flex justify-between px-[30px] py-2.5 border-medium border-2 items-center rounded-lg">
             <p>ID:  {task._id}</p>
-            <div className="flex justify-between gap-2">
+            <div className="flex justify-between gap-4 items-center">
                 <p>класс: {task.class}</p>
                 <p>сложность: {task.level}</p>
                 <p className="max-w-[500px]">теги: {task.tags.split('/').join(', ')}</p>
-                <Link href={'/'}></Link>
+                <Link className='rounded-[10px] px-5 py-[5px] bg-bright ' href={`/${task.id}/${task.class}/${task.level}/${task.tags.split('/').join(',').split(' ').join('_')}`}>Открыть</Link>
             </div>
         </li>
     )
