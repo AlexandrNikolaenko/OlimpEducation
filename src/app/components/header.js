@@ -9,7 +9,7 @@ export default function Header(){
     const [userName, setUserName] = useState(null);
 
     return (
-        <header className="fixed w-full bg-main/70 backdrop-blur-xl z-50 border-b-light-main border-b-[1px]">
+        <header className="fixed w-full bg-main/70 backdrop-blur-xl z-50 border-b-light-main px-0 border-b-[1px] max-[1280px]:px-5">
             <div className="wrapper mx-auto flex justify-between items-center py-3">
                 <Logo />
                 <div className="">
