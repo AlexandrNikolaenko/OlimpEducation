@@ -70,41 +70,41 @@ export default function ChoiceAndTasks(){
         return (
             <>
             <section id='choice-section' className="flex h-screen py-[100px] items-center border-b-light-main border-b-[1px] bg-top bg-no-repeat bg-cover bg-fixed" style={{backgroundImage: 'url(SecondFon.png)'}}>
-                <div className="wrapper mx-auto flex items-center px-0 max-[1280px]:px-5">
-                    <div className="w-[566px] flex flex-col gap-5">
-                        <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите класс</p>
-                        <div className="rounded-[10px] overflow-hidden w-max flex gap-[2px]">
-                            {choiceClass != 8 ? <button className='font-serif text-xl font-normal px-[30px] py-2 bg-bright transition-colors duration-500 hover:bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 8; setChoiceClass(8)}}>8 класс</button> : <button className='font-serif text-xl font-normal px-[30px] py-2 bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>8 класс</button>}
-                            {choiceClass != 9 ? <button className='font-serif text-xl font-normal px-[30px] py-2 bg-bright transition-colors duration-500 hover:bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 9; setChoiceClass(9)}}>9 класс</button> : <button className='font-serif text-xl font-normal px-[30px] py-2 bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>9 класс</button>}
-                            {choiceClass != 10 ? <button className='font-serif text-xl font-normal px-[30px] py-2 bg-bright transition-colors duration-500 hover:bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 10; setChoiceClass(10)}}>10 класс</button> : <button className='font-serif text-xl font-normal px-[30px] py-2 bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>10 класс</button>}
-                            {choiceClass != 11 ? <button className='font-serif text-xl font-normal px-[30px] py-2 bg-bright transition-colors duration-500 hover:bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 11; setChoiceClass(11)}}>11 класс</button> : <button className='font-serif text-xl font-normal px-[30px] py-2 bg-light-main max-[1146px]:text-sm max-[1146px]:px-5 max-[1146px]:py-[6px]' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>11 класс</button>}
+                <div className="wrapper mx-auto flex flex-col px-0 max-[1280px]:px-5">
+                    <div className="flex flex-col gap-7">
+                        <h4 className="font-help text-lg/[1.3em] font-normal tracking-[0.04em]">Стремись на <span className="text-bright">вершину Олимпа</span> с нами</h4>
+                        <p className="font-sans text-sm/[25px] tracking-[0.02em]">Чтобы получить задания выберите <span className="text-bright">класс</span> и <span className="text-bright">сложность</span>, а также укажите <span className="text-bright">теги</span>, которые вас <span className="bg-gradient-to-r from-bright to-medium bg-clip-text text-transparent font-bold">интересуют</span></p>
+                    </div>
+                    <div className="w-full flex flex-col gap-5">
+                        <p className="font-sans text-sm/[25px] tracking-[0.02em]">Выберите класс</p>
+                        <div className="rounded-[10px] overflow-hidden w-max flex flex-nowrap gap-[2px]">
+                            {choiceClass != 8 ? <button className='font-serif font-normal px-[15px] py-[4px] bg-bright transition-colors duration-500 hover:bg-light-main text-xs' onClick={() => {otherCriteria.class = 8; setChoiceClass(8)}}>8 класс</button> : <button className='font-serif text-xs font-normal px-[15px] py-1 bg-light-main' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>8 класс</button>}
+                            {choiceClass != 9 ? <button className='font-serif font-normal px-[15px] py-[4px] bg-bright transition-colors duration-500 hover:bg-light-main text-xs' onClick={() => {otherCriteria.class = 9; setChoiceClass(9)}}>9 класс</button> : <button className='font-serif text-xs font-normal px-[15px] py-1 bg-light-main' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>9 класс</button>}
+                            {choiceClass != 10 ? <button className='font-serif font-normal px-[15px] py-[4px] bg-bright transition-colors duration-500 hover:bg-light-main text-xs' onClick={() => {otherCriteria.class = 10; setChoiceClass(10)}}>10 класс</button> : <button className='font-serif text-xs font-normal px-[15px] py-1 bg-light-main' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>10 класс</button>}
+                            {choiceClass != 11 ? <button className='font-serif font-normal px-[15px] py-[4px] bg-bright transition-colors duration-500 hover:bg-light-main text-xs' onClick={() => {otherCriteria.class = 11; setChoiceClass(11)}}>11 класс</button> : <button className='font-serif text-xs font-normal px-[15px] py-1 bg-light-main' onClick={() => {otherCriteria.class = 0; setChoiceClass(0)}}>11 класс</button>}
                         </div>
-                        <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите сложность</p>
+                        <p className="font-sans text-sm/[25px] tracking-[0.02em]">Выберите сложность</p>
                         <div style={{backgroundImage: 'url(HardLevelLine.svg)'}} className="bg-cover w-60 h-[30px] flex justify-between bg-no-repeat items-center">
                             {choiceLevel != 1 ? <button className="font-serif rounded-full bg-transparent hover:bg-light-main transition-colors duration-300 w-[30px] h-[30px] py-0 hover:py-1 px-0 hover:px-1 " onClick={() => {otherCriteria.hardLevel = 1; setChoiceLevel(1)}}>1</button> : <button className="font-serif rounded-full bg-light-main transition-colors duration-300 w-[30px] h-[30px] py-1 px-1 " onClick={() => {otherCriteria.hardLevel = 0; setChoiceLevel(0)}}>1</button>}
                             {choiceLevel != 2 ? <button className="font-serif rounded-full bg-transparent hover:bg-light-main transition-colors duration-300 w-[30px] h-[30px] py-0 hover:py-1 px-0 hover:px-1 " onClick={() => {otherCriteria.hardLevel = 2; setChoiceLevel(2)}}>2</button> : <button className="font-serif rounded-full bg-light-main transition-colors duration-300 w-[30px] h-[30px] py-1 px-1 " onClick={() => {otherCriteria.hardLevel = 0; setChoiceLevel(0)}}>2</button>}
                             {choiceLevel != 3 ? <button className="font-serif rounded-full bg-transparent hover:bg-light-main transition-colors duration-300 w-[30px] h-[30px] py-0 hover:py-1 px-0 hover:px-1 " onClick={() => {otherCriteria.hardLevel = 3; setChoiceLevel(3)}}>3</button> : <button className="font-serif rounded-full bg-light-main transition-colors duration-300 w-[30px] h-[30px] py-1 px-1 " onClick={() => {otherCriteria.hardLevel = 0; setChoiceLevel(0)}}>3</button>}
                         </div>
-                        <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите интересующие теги</p>
+                        <p className="font-sans text-sm/[25px] tracking-[0.02em]">Выберите интересующие теги</p>
                         <ul className="w-full flex flex-wrap gap-2 h-[245px] overflow-y-scroll">
-                            {tags.map(tag => <li key={tag.id}> {choiceTag.includes(tag.tagName) ? <button className="font-serif text-xl font-normal py-1 px-3 rounded-[10px] bg-light-main" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.filter((elem) => elem != tag.tagName))}}>{tag.tagName}</button> : <button className="font-serif text-xl font-normal py-1 px-3 rounded-[10px] bg-medium" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.concat(tag.tagName))}}>{tag.tagName}</button>}</li>)}
+                            {tags.map(tag => <li key={tag.id}> {choiceTag.includes(tag.tagName) ? <button className="font-serif text-xs font-normal py-[3px] px-[10px] rounded-[10px] bg-light-main" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.filter((elem) => elem != tag.tagName))}}>{tag.tagName}</button> : <button className="font-serif text-xs font-normal py-[3px] px-[10px] rounded-[10px] bg-medium" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.concat(tag.tagName))}}>{tag.tagName}</button>}</li>)}
                         </ul>
-                        <Link href='/' className="font-serif text-xl font-normal text-bright">Подробнее про теги</Link>
-                        <button className="font-sans text-2xl/[25px] font-normal tracking-[0.02em] px-[30px] py-2.5 bg-bright rounded-[10px] w-max hover:bg-light-main transition-colors duration-500 " onClick={() => {
+                        <Link href='/' className="font-serif text-xs font-normal text-bright">Подробнее про теги</Link>
+                        <button className="font-sans text-sm/[25px] font-normal tracking-[0.02em] px-[15px] py-[6px] bg-bright rounded-[10px] w-max hover:bg-light-main transition-colors duration-500 " onClick={() => {
                                 setCriteria({class: otherCriteria.class, hardLevel: otherCriteria.hardLevel, tags: choiceTags});
                                 document.getElementById('data-section').scrollIntoView({behavior: 'smooth'});
                             }}>Найти</button>
-                    </div>
-                    <div className="flex flex-col gap-7">
-                        <h4 className="font-help text-[32px]/[1.3em] font-normal tracking-[0.04em] text-right max-[1146px]:text-2xl/[1.3em]">Стремись на <span className="text-bright">вершину Олимпа</span> с нами</h4>
-                        <p className="font-sans text-2xl/[25px] tracking-[0.02em] text-right max-[1146px]:text-lg/[25px]">Чтобы получить задания выберите <span className="text-bright">класс</span> и <span className="text-bright">сложность</span>, а также укажите <span className="text-bright">теги</span>, которые вас <span className="bg-gradient-to-r from-bright to-medium bg-clip-text text-transparent font-bold">интересуют</span></p>
                     </div>
                 </div>
                 
             </section>
             <section id='data-section' className="wrapper mx-auto py-[60px] bg-local min-h-screen bg-center bg-no-repeat flex flex-col  gap-y-4 px-0 max-[1280px]:px-5" style={{backgroundImage: 'url(ThirdFon.png)'}}>
                 <input placeholder="Найти по ID" className="px-7 bg-transparent py-2.5 rounded-[10px] border-medium border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
-                <p className="font-sans text-2xl/[25px] tracking-[0.02em]">По вашему запросу были найдены следующие задачи:</p>
+                <p className="font-sans text-sm/[25px] tracking-[0.02em]">По вашему запросу были найдены следующие задачи:</p>
                 <TaskList _class={criteria.class} level={criteria.hardLevel} tags={criteria.tags}/>
             </section>
             </>
