@@ -4,18 +4,24 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "./logo";
+import Login from "./login"
 
 export default function Header(){
     const [userName, setUserName] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+    
 
     return (
-        <header className="fixed w-full bg-main/70 backdrop-blur-xl z-50 border-b-light-main px-0 border-b-[1px] max-[1280px]:px-5">
-            <div className="wrapper mx-auto flex justify-between items-center py-3">
-                <Logo />
-                <div className="">
-                    {userName == null ? <Link href={'/login'}><Image alt='Entrance' src={'/Entrance.svg'} width={15} height={18}/></Link> : <div className=""><p>{userName}</p><Link></Link></div>}
+        <>
+            <header className="fixed w-full bg-main/70 backdrop-blur-xl z-50 border-b-light-main px-0 border-b-[1px] max-[1280px]:px-5">
+                <div className="wrapper mx-auto flex justify-between items-center py-3">
+                    <Logo />
+                    <div className="">
+                        {userName == null ? <button onClick={() => setIsOpen(!isOpen)}><Image alt='Entrance' src={'/Entrance.svg'} width={15} height={18}/></button> : <div className=""><p>{userName}</p><Link></Link></div>}
+                    </div>
                 </div>
-            </div>
-        </header>
+            </header>
+            {isOpen ? <Login /> : <></>}
+        </>
     )
 }

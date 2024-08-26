@@ -48,7 +48,6 @@ export default function TaskList({_class, level, tags}){
                 catch (err) {
                     console.error(err);
                 }
-            
         }
         getData();
     });

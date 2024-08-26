@@ -46,7 +46,7 @@ export default function ChoiceAndTasks(){
                 <ul className="w-full flex flex-wrap gap-2 h-[245px] overflow-y-scroll">
                     {tags.map(tag => <li key={tag.id}> {choiceTag.includes(tag.tagName) ? <button className="font-serif text-xl font-normal py-1 px-3 rounded-[10px] bg-light-main" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.filter((elem) => elem != tag.tagName))}}>{tag.tagName}</button> : <button className="font-serif text-xl font-normal py-1 px-3 rounded-[10px] bg-medium" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.concat(tag.tagName))}}>{tag.tagName}</button>}</li>)}
                 </ul>
-                <Link href='/' className="font-serif text-xl font-normal text-bright">Подробнее про теги</Link>
+                <Link href='/abouttags' className="font-serif text-xl font-normal text-bright">Подробнее про теги</Link>
                 <button className="font-sans text-2xl/[25px] font-normal tracking-[0.02em] px-[30px] py-2.5 bg-bright rounded-[10px] w-max hover:bg-light-main transition-colors duration-500 " onClick={() => {
                         setCriteria({class: otherCriteria.class, hardLevel: otherCriteria.hardLevel, tags: choiceTags});
                         document.getElementById('data-section').scrollIntoView({behavior: 'smooth'});
@@ -60,7 +60,7 @@ export default function ChoiceAndTasks(){
                 
             </section>
             <section id='data-section' className="wrapper mx-auto py-[60px] bg-local min-h-screen bg-center bg-no-repeat flex flex-col  gap-y-4 px-0 max-[1280px]:px-5" style={{backgroundImage: 'url(ThirdFon.png)'}}>
-                <input placeholder="Найти по ID" className="px-7 bg-transparent py-2.5 rounded-[10px] border-medium border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
+                {/* <input placeholder="Найти по ID" className="px-7 bg-transparent py-2.5 rounded-[10px] border-medium border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input> */}
                 <p className="font-sans text-2xl/[25px] tracking-[0.02em]">По вашему запросу были найдены следующие задачи:</p>
                 <TaskList _class={criteria.class} level={criteria.hardLevel} tags={criteria.tags}/>
             </section>
@@ -93,7 +93,7 @@ export default function ChoiceAndTasks(){
                         <ul className="w-full flex flex-wrap gap-2 h-[245px] overflow-y-scroll">
                             {tags.map(tag => <li key={tag.id}> {choiceTag.includes(tag.tagName) ? <button className="font-serif text-xs font-normal py-[3px] px-[10px] rounded-[10px] bg-light-main" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.filter((elem) => elem != tag.tagName))}}>{tag.tagName}</button> : <button className="font-serif text-xs font-normal py-[3px] px-[10px] rounded-[10px] bg-medium" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.concat(tag.tagName))}}>{tag.tagName}</button>}</li>)}
                         </ul>
-                        <Link href='/' className="font-serif text-xs font-normal text-bright">Подробнее про теги</Link>
+                        <Link href='/abouttags' className="font-serif text-xs font-normal text-bright">Подробнее про теги</Link>
                         <button className="font-sans text-sm/[25px] font-normal tracking-[0.02em] px-[15px] py-[6px] bg-bright rounded-[10px] w-max hover:bg-light-main transition-colors duration-500 " onClick={() => {
                                 setCriteria({class: otherCriteria.class, hardLevel: otherCriteria.hardLevel, tags: choiceTags});
                                 document.getElementById('data-section').scrollIntoView({behavior: 'smooth'});
@@ -146,7 +146,7 @@ export default function ChoiceAndTasks(){
                                 <ul className="w-full flex flex-wrap gap-2 h-[245px] overflow-y-scroll">
                                     {tags.map(tag => <li key={tag.id}> {choiceTag.includes(tag.tagName) ? <button className="font-serif text-sm font-normal py-[3px] px-2.5 rounded-[10px] bg-light-main" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.filter((elem) => elem != tag.tagName))}}>{tag.tagName}</button> : <button className="font-serif text-sm font-normal py-[3px] px-2.5 rounded-[10px] bg-medium" onClick={() => {makeChoiceTags(tag.tagName); setChoiceTag(choiceTag.concat(tag.tagName))}}>{tag.tagName}</button>}</li>)}
                                 </ul>
-                                <Link href='/' className="font-serif text-sm font-normal text-bright">Подробнее про теги</Link>
+                                <Link href='/abouttags' className="font-serif text-sm font-normal text-bright">Подробнее про теги</Link>
                             </div>
                         </div>
                     </div>
