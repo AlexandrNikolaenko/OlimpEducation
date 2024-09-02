@@ -6,18 +6,28 @@ import { useState } from "react"
 
 export default function Login ({close}){
     const [isRegUser, setIsRegUser] = useState(true);
+    const [regErr, setRegErr] = useState(false);
 
     function sendFormData (url, method, formData) {
-        console.log(formData);
+        let json = JSON.stringify(formData);
         fetch(url, {
             method: method,
             headers: {
-                "Content-Type": "json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
             },
-            body: formData
+            body: json
         })
-        .then(res => res.json())
-        .then(data => console.log(data))
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.name != '') {
+                setRegErr(false);
+                close(data.name);
+            } else {
+                setRegErr(true);
+            }
+        })
+        .catch((err) => console.log(err))
     }
 
     if (isRegUser) {
@@ -25,11 +35,11 @@ export default function Login ({close}){
             <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52">
                 <div className=" mx-auto max-w-[511px] p-7 rounded-[10px] border-super-light border-2">
                     <p className="pb-5 text-2xl/[25px] tracking-[0.02em]">Вход в систему</p>
+                    {regErr ? <p className="text-red-600">Неверно указан логин или пароль</p> : <></>}
                     <form className="flex flex-col gap-y-5" id={'login-form'} onSubmit={function (e)  {
                         e.preventDefault();
                         let formData = new FormData(document.getElementById('login-form'));
                         formData = Object.fromEntries(formData);
-                        console.log(formData);
                         sendFormData('http://localhost:5000/login', 'POST', formData)
                         }}>
                         <input placeholder="Логин" name="login" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
@@ -47,7 +57,12 @@ export default function Login ({close}){
             <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52">
                 <div className="mx-auto max-w-[511px] p-7 rounded-[10px] border-super-light border-2">
                     <p className="pb-5 text-2xl/[25px] tracking-[0.02em]">Регистрация в системе</p>
-                    <form className="flex flex-col gap-y-5 signup-form" action="http://localhost:5000/login" method="post">
+                    <form className="flex flex-col gap-y-5 signup-form" id={'sign-up-form'} onSubmit={function (e) {
+                        e.preventDefault();
+                        let formData = new FormData(document.getElementById('sign-up-form'));
+                        formData = Object.fromEntries(formData);
+                        sendFormData('http://localhost:5000/signup', 'POST', formData)
+                    }}>
                         <input placeholder="Никнейм" name="name" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <input placeholder="Логин" name="login" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <input placeholder="Email" name="email" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>

@@ -9,6 +9,11 @@ import Login from "./login"
 export default function Header(){
     const [userName, setUserName] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+
+    function close(name) {
+        setUserName(name);
+        setIsOpen(false)
+    }
     
 
     return (
@@ -17,11 +22,22 @@ export default function Header(){
                 <div className="wrapper mx-auto flex justify-between items-center py-3">
                     <Logo />
                     <div className="">
-                        {userName == null ? <button onClick={() => setIsOpen(!isOpen)}><Image alt='Entrance' src={'/Entrance.svg'} width={15} height={18}/></button> : <div className=""><p>{userName}</p><Link></Link></div>}
+                        {userName == null 
+                            ? 
+                            <button onClick={() => setIsOpen(!isOpen)}>
+                                <Image alt='Entrance' src={'/Entrance.svg'} width={15} height={18}/>
+                            </button>
+                            : 
+                            <div className="">
+                                <p>{userName}</p>
+                                <button onClick={() => setUserName(null)}>
+                                    <Image alt='Exit' src={'/Exit.svg'} width={15} height={18}/>
+                                </button>
+                            </div>}
                     </div>
                 </div>
             </header>
-            {isOpen ? <Login /> : <></>}
+            {isOpen ? <Login close={close}/> : <></>}
         </>
     )
 }
