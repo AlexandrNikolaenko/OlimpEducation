@@ -47,3 +47,14 @@
     src: url(../../fonts/yeseva-one-v22-cyrillic_latin-regular.woff2) format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
   }
 }
+
+*::-webkit-scrollbar{
+  background: #220629;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb{
+  background-color: #9747FF;
+  border-radius: 10px;
+}
+

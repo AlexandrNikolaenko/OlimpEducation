@@ -22,7 +22,7 @@ export default function PreView (){
             <section className="h-screen bg-cover bg-right-bottom bg-no-repeat border-b-light-main border-b-[1px] min-[683px]:max-[900px]:h-auto " style={{backgroundImage: 'url(SmallFon.png)'}}>
                 <div className="wrapper px-0 mx-auto flex flex-col justify-center h-full max-[1280px]:px-5 max-[900px]:py-28">
                     <div className="flex flex-col gap-7 items-start w-full">
-                        <span className="bg-clip-text bg-gradient-to-r from-bright to-medium text-[44px] text-transparent font-extrabold font-title">OlimpEducation</span>
+                        <span className="bg-clip-text bg-gradient-to-r from-bright to-medium text-[44px] text-transparent font-extrabold font-title max-[340px]:text-[38px]">OlimpEducation</span>
                         <h4 className="font-help text-lg/[1.3em] font-normal tracking-[0.04em]">Наш проект <span className="font-help text-bright">облегчит</span> подготовку к <span className="font-help text-bright">олимпиадам</span>!</h4>
                         <p className="font-sans text-sm/[25px] font-normal tracking-[0.02em]">Теперь, чтобы найти задачу по теме больше не нужно пересматривать множество архивов в попытках найти подходящую, а достаточно вбить интересующий тег, получить условие и наслаждаться процессом решения
                         Надеемся, что он поможет вам в достижении самых высоких олимпиадных вершин!</p>
