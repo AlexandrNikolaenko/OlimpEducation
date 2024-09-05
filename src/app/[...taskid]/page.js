@@ -8,7 +8,6 @@ import { AsResolved } from "../components/Buttons";
 export default async function Page({params}){
     let url, answerUrl;
     let id = params.taskid[0];
-    let isDone = Boolean(params.taskid[4]);
 
     await fetch(`http://localhost:5000/answer?id=${id}`, {method: 'GET'})
             .then(res => res.json()).then(data => answerUrl = data.url);
@@ -32,7 +31,7 @@ export default async function Page({params}){
                 <Link href={'/'} className="bg-bright font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] border-bright border-2 rounded-[10px]">Закрыть</Link>
                 <DownloadTaskButton name={`${params.taskid[0]}.jpg`} url={url}/>
                 <DownloadAnswerButton name={`Answer_${params.taskid[0]}.pdf`} url={answerUrl}/>
-                <AsResolved taskId={id} disable={false} isDone={isDone}/>
+                <AsResolved taskId={id} disable={false} isDone={false}/>
             </div>
         </div>
     )

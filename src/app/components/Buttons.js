@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function downloadFile(fileName, url) {
     const a = document.createElement('a');
@@ -24,8 +24,22 @@ export function DownloadAnswerButton({name, url}) {
     return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-bright rounded-[10px]" onClick={() => downloadFile(name, url)}>Скачать решение</button>
 }
 
-export function AsResolved({taskId, disable, isDone}) {
-    const [isDisable, setIsDisable] = useState(disable);
+export function AsResolved({taskId, isDone}) {
+    const [isMark, setIsMark] = useState(isDone);
+
+    useEffect(() => {
+        async function getIsDone() {
+            if (window.localStorage.getItem('userId') && window.localStorage.getItem('userId') != 'undefined'){
+                await fetch(`http://localhost:5000/getdoneid?userid=${window.localStorage.getItem('userId')}`, {method: 'GET'})
+                        .then(res => res.json())
+                        .then(data => {if (isMark != typeof data.ids.find(i => i == id) != 'undefined') setIsMark(typeof data.ids.find(i => i == id) != 'undefined')})
+            }
+        }
+        getIsDone();
+    }
+    )
+    
+
     function addtask () {
         fetch(`http://localhost:5000/addtask`, {
             method: 'POST',
@@ -38,8 +52,8 @@ export function AsResolved({taskId, disable, isDone}) {
                 userId: window.localStorage.getItem('userId')
             })
         })
-            .then(res => res.json())
-            .then(data => console.log(data))
+        .then(res => res.json())
+        .then(data => {if (data[0].res == 'success') setIsMark(true)})
     }
 
     function removeTask() {
@@ -54,7 +68,18 @@ export function AsResolved({taskId, disable, isDone}) {
                 userId: window.localStorage.getItem('userId')
             })
         })
+        .then(res => res.json)
+        .then(data => {if (data[0].res == 'success') setIsMark(false)})
     }
 
-    return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]">Отметить решенным</button>
+    if (window.localStorage.getItem('userId') && window.localStorage.getItem('userId') != 'undefined') {
+        if (isMark) {
+            return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" onClick={removeTask}>Отметить нерешенным</button>
+        } else {
+            return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" onClick={addtask}>Отметить решенным</button>
+        }
+    } else {
+        return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" disabled>Отметить решенным</button>
+    }
+
 }
