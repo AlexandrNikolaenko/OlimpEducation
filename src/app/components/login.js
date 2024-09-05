@@ -22,7 +22,7 @@ export default function Login ({close}){
         .then((data) => {
             if (data.name != '') {
                 setRegErr(false);
-                close(data.name);
+                close(data.name, data.userId);
             } else {
                 setRegErr(true);
             }
@@ -35,7 +35,7 @@ export default function Login ({close}){
             <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52">
                 <div className=" mx-auto max-w-[511px] p-7 rounded-[10px] border-super-light border-2">
                     <p className="pb-5 text-2xl/[25px] tracking-[0.02em]">Вход в систему</p>
-                    {regErr ? <p className="text-red-600">Неверно указан логин или пароль</p> : <></>}
+                    {regErr ? <p className="text-red-600 pb-5">Неверно указан логин или пароль</p> : <></>}
                     <form className="flex flex-col gap-y-5" id={'login-form'} onSubmit={function (e)  {
                         e.preventDefault();
                         let formData = new FormData(document.getElementById('login-form'));
