@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from "react";
+
 function downloadFile(fileName, url) {
     const a = document.createElement('a');
     a.href = url;
@@ -20,4 +22,39 @@ export function DownloadTaskButton({name, url}) {
 
 export function DownloadAnswerButton({name, url}) {
     return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-bright rounded-[10px]" onClick={() => downloadFile(name, url)}>Скачать решение</button>
+}
+
+export function AsResolved({taskId, disable, isDone}) {
+    const [isDisable, setIsDisable] = useState(disable);
+    function addtask () {
+        fetch(`http://localhost:5000/addtask`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            body: JSON.stringify({
+                id: taskId,
+                userId: window.localStorage.getItem('userId')
+            })
+        })
+            .then(res => res.json())
+            .then(data => console.log(data))
+    }
+
+    function removeTask() {
+        fetch('http://localhost:5000/removetask', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            body: JSON.stringify({
+                id: taskId,
+                userId: window.localStorage.getItem('userId')
+            })
+        })
+    }
+
+    return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]">Отметить решенным</button>
 }

@@ -2,16 +2,13 @@
 
 import { TaskImage } from "../components/taskImage"
 import Link from "next/link"
-import { DownloadTaskButton, DownloadAnswerButton } from "../components/Buttons"
+import { DownloadTaskButton, DownloadAnswerButton } from "../components/Buttons";
+import { AsResolved } from "../components/Buttons";
 
 export default async function Page({params}){
-
-    console.log(params)
-
-    let url, answerUrl
+    let url, answerUrl;
     let id = params.taskid[0];
-
-    console.log(`http://localhost:5000/task?id=${id}`)
+    let isDone = Boolean(params.taskid[4]);
 
     await fetch(`http://localhost:5000/answer?id=${id}`, {method: 'GET'})
             .then(res => res.json()).then(data => answerUrl = data.url);
@@ -35,7 +32,7 @@ export default async function Page({params}){
                 <Link href={'/'} className="bg-bright font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] border-bright border-2 rounded-[10px]">Закрыть</Link>
                 <DownloadTaskButton name={`${params.taskid[0]}.jpg`} url={url}/>
                 <DownloadAnswerButton name={`Answer_${params.taskid[0]}.pdf`} url={answerUrl}/>
-                <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]">Отметить решенным</button>
+                <AsResolved taskId={id} disable={false} isDone={isDone}/>
             </div>
         </div>
     )
