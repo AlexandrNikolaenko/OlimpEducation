@@ -32,13 +32,11 @@ export function AsResolved({taskId, isDone}) {
             if (window.localStorage.getItem('userId') && window.localStorage.getItem('userId') != 'undefined'){
                 await fetch(`http://localhost:5000/getdoneid?userid=${window.localStorage.getItem('userId')}`, {method: 'GET'})
                         .then(res => res.json())
-                        .then(data => {if (isMark != typeof data.ids.find(i => i == id) != 'undefined') setIsMark(typeof data.ids.find(i => i == id) != 'undefined')})
+                        .then(data => {if (isMark != (typeof data.ids.find(i => i == taskId) != 'undefined')) setIsMark(typeof data.ids.find(i => i == taskId) != 'undefined')})
             }
         }
         getIsDone();
-    }
-    )
-    
+    });
 
     function addtask () {
         fetch(`http://localhost:5000/addtask`, {
@@ -53,7 +51,10 @@ export function AsResolved({taskId, isDone}) {
             })
         })
         .then(res => res.json())
-        .then(data => {if (data[0].res == 'success') setIsMark(true)})
+        .then(data => {
+            console.log(data.res);
+            if (data.res == 'success') setIsMark(true);
+            })
     }
 
     function removeTask() {
@@ -68,8 +69,11 @@ export function AsResolved({taskId, isDone}) {
                 userId: window.localStorage.getItem('userId')
             })
         })
-        .then(res => res.json)
-        .then(data => {if (data[0].res == 'success') setIsMark(false)})
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.res);
+            if (data.res == 'success') setIsMark(false);
+            })
     }
 
     if (window.localStorage.getItem('userId') && window.localStorage.getItem('userId') != 'undefined') {
@@ -81,5 +85,4 @@ export function AsResolved({taskId, isDone}) {
     } else {
         return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" disabled>Отметить решенным</button>
     }
-
 }
