@@ -83,6 +83,6 @@ export function AsResolved({taskId, isDone}) {
             return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" onClick={addtask}>Отметить решенным</button>
         }
     } else {
-        return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" disabled>Отметить решенным</button>
+        return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" onClick={() => alert('Необходимо войти в систему')}>Отметить решенным</button>
     }
 }

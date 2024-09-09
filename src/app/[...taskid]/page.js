@@ -28,7 +28,7 @@ export default async function Page({params}){
             </div>
             <TaskImage url={url} />
             <div className="flex justify-between">
-                <Link href={'/'} className="bg-bright font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] border-bright border-2 rounded-[10px]">Закрыть</Link>
+                <Link href={'http://localhost:3000/'} className="bg-bright font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] border-bright border-2 rounded-[10px]">Закрыть</Link>
                 <DownloadTaskButton name={`${params.taskid[0]}.jpg`} url={url}/>
                 <DownloadAnswerButton name={`Answer_${params.taskid[0]}.pdf`} url={answerUrl}/>
                 <AsResolved taskId={params.taskid[0]} disable={false} isDone={false}/>

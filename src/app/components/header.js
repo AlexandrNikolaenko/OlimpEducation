@@ -20,11 +20,13 @@ export default function Header(){
         setIsOpen(false);
         storage.setItem('userName', name);
         storage.setItem('userId', userId);
+        window.location.reload();
     }
 
     function exit() {
         setUserName(null);
         storage.clear();
+        window.location.reload();
     }
 
     return (

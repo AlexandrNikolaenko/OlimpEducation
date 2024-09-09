@@ -14,7 +14,7 @@ function CreateTask(task, isDone){
                 <p className="font-sans text-2xl/[25px] tracking-[0.02em] max-[1146px]:text-lg/[25px] max-sm:text-sm/[14px] break-normal text-nowrap">класс: {task.class}</p>
                 <p className="font-sans text-2xl/[25px] tracking-[0.02em] max-[1146px]:text-lg/[25px] max-sm:text-sm/[14px] text-nowrap">сложность: {task.level}</p>
                 <p className="max-w-[500px] max-[1146px]:max-w-[350px] text-center max-[840px]:text-left font-sans text-2xl/[25px] tracking-[0.02em] max-[1146px]:text-lg/[25px] max-sm:text-sm/[14px] max-[340px]:break-all w-full hyphens-auto">теги: {task.tags.split('/').join(', ')}</p>
-                <Link className='rounded-[10px] px-5 py-[5px] bg-bright font-sans text-2xl/[25px] tracking-[0.02em] max-[1146px]:text-lg/[25px] max-sm:text-sm/[14px] max-sm:px-2.5' href={`/${task.id}/${task.class}/${task.level}/${task.tags.split('/').join(',').split(' ').join('_')}`}>Открыть</Link>
+                <Link className='rounded-[10px] px-5 py-[5px] bg-bright font-sans text-2xl/[25px] tracking-[0.02em] max-[1146px]:text-lg/[25px] max-sm:text-sm/[14px] max-sm:px-2.5' href={`/${task._id}/${task.class}/${task.level}/${task.tags.split('/').join(',').split(' ').join('_')}`}>Открыть</Link>
             </div>
         </li>
     )
