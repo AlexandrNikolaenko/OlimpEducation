@@ -108,13 +108,13 @@ const tags = [
 
 export default function AboutTags () {
     return (
-        <div className="bg-fixed bg-no-repeat bg-contain pt-24 pb-12" style={{backgroundImage: 'url(SecondFon.png)'}}>
-            <ul className="wrapper mx-auto flex flex-col gap-5">
+        <div className="bg-fixed bg-no-repeat bg-cover bg-top pt-24 pb-12" style={{backgroundImage: 'url(SecondFon.png)'}}>
+            <ul className="wrapper mx-auto flex flex-col gap-5 max-sm:gap:3">
                 {tags.map((elem) => {
                     return(
-                        <li key={elem.key} className="flex flex-col items-start gap-3">
-                            <h5 className="text-bright text-[32px]/[1.3em] font-help">{elem.tagName}</h5>
-                            <p className="font-sans text-2xl/[25px] tracking-[0.02em]">{elem.description}</p>
+                        <li key={elem.key} className="flex flex-col items-start gap-3 max-sm:gap-2 px-5">
+                            <h5 className="text-bright text-[32px]/[1.3em] font-help max-md:text-[24px]/[1.3em] max-sm:text-[18px]/[1.3em]">{elem.tagName}</h5>
+                            <p className="font-sans text-2xl/[25px] tracking-[0.02em] max-md:text-lg/[25px] max-sm:text-[14px]/[25px]">{elem.description}</p>
                         </li>
                     )
                 })}

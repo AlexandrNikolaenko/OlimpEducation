@@ -17,11 +17,11 @@ export function ScrollButton({id, text}){
 }
 
 export function DownloadTaskButton({name, url}) {
-    return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] border-bright border-2 rounded-[10px]" onClick={() => downloadFile(name, url)}>Скачать задачу</button>
+    return <button className="font-sans text-2xl/[25px] max-[1146px]:text-lg/[25px] max-[700px]:text-sm/[18px] tracking-[0.02em] px-5  max-[1146px]:px-3.5 py-[5px] max-[1146px]:py-[4px] border-bright border-2 rounded-[10px]" onClick={() => downloadFile(name, url)}>Скачать задачу</button>
 }
 
 export function DownloadAnswerButton({name, url}) {
-    return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-bright rounded-[10px]" onClick={() => downloadFile(name, url)}>Скачать решение</button>
+    return <button className="font-sans text-2xl/[25px] max-[1146px]:text-lg/[25px] max-[700px]:text-sm/[18px] tracking-[0.02em] px-5  max-[1146px]:px-3.5 py-[5px] max-[1146px]:py-[4px] bg-bright rounded-[10px]" onClick={() => downloadFile(name, url)}>Скачать решение</button>
 }
 
 export function AsResolved({taskId, isDone}) {
@@ -78,11 +78,11 @@ export function AsResolved({taskId, isDone}) {
 
     if (window.localStorage.getItem('userId') && window.localStorage.getItem('userId') != 'undefined') {
         if (isMark) {
-            return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" onClick={removeTask}>Отметить нерешенным</button>
+            return <button className="font-sans text-2xl/[25px] max-[1146px]:text-lg/[25px] max-[700px]:text-sm/[18px] tracking-[0.02em] px-5 max-[1146px]:px-3.5 py-[5px] max-[1146px]:py-[4px] bg-medium rounded-[10px]" onClick={removeTask}>Отметить нерешенным</button>
         } else {
-            return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" onClick={addtask}>Отметить решенным</button>
+            return <button className="font-sans text-2xl/[25px] max-[1146px]:text-lg/[25px] max-[700px]:text-sm/[18px] tracking-[0.02em] px-5 max-[1146px]:px-3.5 py-[5px] max-[1146px]:py-[4px] bg-medium rounded-[10px]" onClick={addtask}>Отметить решенным</button>
         }
     } else {
-        return <button className="font-sans text-2xl/[25px] tracking-[0.02em] px-5 py-[5px] bg-medium rounded-[10px]" onClick={() => alert('Необходимо войти в систему')}>Отметить решенным</button>
+        return <button className="font-sans text-2xl/[25px] max-[1146px]:text-lg/[25px] max-[700px]:text-sm/[18px] tracking-[0.02em] px-5 max-[1146px]:px-3.5 py-[5px] max-[1146px]:py-[4px] bg-medium rounded-[10px]" onClick={() => alert('Необходимо войти в систему')}>Отметить решенным</button>
     }
 }

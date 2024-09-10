@@ -36,7 +36,7 @@ export default function Login ({close}){
 
     if (isRegUser) {
         return (
-            <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52">
+            <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52 wrapper mx-auto px-5">
                 <div className=" mx-auto max-w-[511px] p-7 rounded-[10px] border-super-light border-2">
                     <p className="pb-5 text-2xl/[25px] tracking-[0.02em]">Вход в систему</p>
                     {regErr ? <p className="text-red-600 pb-5">Неверно указан логин или пароль</p> : <></>}
@@ -58,7 +58,7 @@ export default function Login ({close}){
         )
     } else {
         return (
-            <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52">
+            <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52 px-5">
                 <div className="mx-auto max-w-[511px] p-7 rounded-[10px] border-super-light border-2">
                     <p className="pb-5 text-2xl/[25px] tracking-[0.02em]">Регистрация в системе</p>
                     {regErr ? <p className="text-red-600 pb-5">Этот адрес электронной почты уже зарегистрирован</p> : <></>}
