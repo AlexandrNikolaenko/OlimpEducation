@@ -7,6 +7,7 @@ import { useState } from "react"
 export default function Login ({close}){
     const [isRegUser, setIsRegUser] = useState(true);
     const [regErr, setRegErr] = useState(false);
+    const [isCorrectPass, setIsCorrectPass] = useState(true);
 
     function sendFormData (url, method, formData) {
         let json = JSON.stringify(formData);
@@ -20,14 +21,17 @@ export default function Login ({close}){
         })
         .then((res) => res.json())
         .then((data) => {
-            if (data.name != '') {
+            if (data.name != '' && data.name != null) {
                 setRegErr(false);
                 close(data.name, data.userId);
             } else {
                 setRegErr(true);
             }
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+            alert('Ошибка регистрации');
+            console.log(err);
+        })
     }
 
     if (isRegUser) {
@@ -46,7 +50,7 @@ export default function Login ({close}){
                         <input placeholder="Пароль" name="password" type='password' className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <div className="flex flex-nowrap justify-center gap-5 items-center">
                             <button type="submit" className="px-5 py-2.5 rounded-[10px] font-serif text-xl bg-medium">Войти</button>
-                            <button onClick={(act) => {act.preventDefault(); setIsRegUser(false)}} className={'px-5 py-2.5 rounded-[10px] font-serif text-xl bg-bright'}>Зарегистрироваться</button>
+                            <button onClick={(act) => {act.preventDefault(); setIsRegUser(false); setRegErr(false)}} className={'px-5 py-2.5 rounded-[10px] font-serif text-xl bg-bright'}>Зарегистрироваться</button>
                         </div>
                     </form>
                 </div>  
@@ -57,19 +61,26 @@ export default function Login ({close}){
             <div className="h-screen fixed w-full bg-main/70 backdrop-blur-xl pt-52">
                 <div className="mx-auto max-w-[511px] p-7 rounded-[10px] border-super-light border-2">
                     <p className="pb-5 text-2xl/[25px] tracking-[0.02em]">Регистрация в системе</p>
+                    {regErr ? <p className="text-red-600 pb-5">Этот адрес электронной почты уже зарегистрирован</p> : <></>}
                     <form className="flex flex-col gap-y-5 signup-form" id={'sign-up-form'} onSubmit={function (e) {
                         e.preventDefault();
                         let formData = new FormData(document.getElementById('sign-up-form'));
                         formData = Object.fromEntries(formData);
-                        sendFormData('http://localhost:5000/signup', 'POST', formData)
+                        if (formData.password != formData.repassword) setIsCorrectPass(false);
+                        else {
+                            sendFormData('http://localhost:5000/signup', 'POST', formData);
+                            setIsCorrectPass(true);
+                        }
+                        
                     }}>
                         <input placeholder="Никнейм" name="name" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <input placeholder="Логин" name="login" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <input placeholder="Email" name="email" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
+                        {isCorrectPass ? <></> : <p className="text-red-600">Введенный и повторенный пароли не совпадают</p>}
                         <input placeholder="Пароль" name="password" type='password' className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <input placeholder="Повторите пароль" name="repassword" type="password" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <div className="flex flex-nowrap justify-center gap-5 items-center">
-                            <button onClick={(act) => {act.preventDefault(); setIsRegUser(true)}} className="px-5 py-2.5 rounded-[10px] font-serif text-xl bg-medium">Войти</button>
+                            <button onClick={(act) => {act.preventDefault(); setIsRegUser(true); setRegErr(false)}} className="px-5 py-2.5 rounded-[10px] font-serif text-xl bg-medium">Войти</button>
                             <button type='submit' className={'px-5 py-2.5 rounded-[10px] font-serif text-xl bg-bright'}>Зарегистрироваться</button>
                         </div>
                     </form>
