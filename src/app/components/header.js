@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Logo from "./logo";
 import Login from "./login"
@@ -8,6 +8,16 @@ import Login from "./login"
 export default function Header(){
     const [userName, setUserName] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [isWindow, setIsWindow] = useState(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        if (!isWindow) {
+            setIsWindow(typeof window != 'undefined');
+        }
+    })
+
+    if (!isWindow) return <></>
 
     let storage = window.localStorage;
 

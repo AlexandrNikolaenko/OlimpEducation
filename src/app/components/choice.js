@@ -1,7 +1,7 @@
 'use client'
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskList from "./taskList"
 import { tags } from "./Tags";
 
@@ -99,6 +99,17 @@ function ChoiceTags ({displayWidth, changeValue}) {
 
 export default function ChoiceAndTasks(){
     let [criteria, setCriteria] = useState({class: 8, hardLevel: 1, tags: ['расчёт']});
+    const [isWindow, setIsWindow] = useState(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        if (!isWindow) {
+            setIsWindow(typeof window != 'undefined');
+        }
+    });
+
+    if (!isWindow) return <></>
+
     let choiceTags = criteria.tags;
     let otherCriteria = {class: criteria.class, hardLevel: criteria.hardLevel};
 

@@ -1,10 +1,22 @@
 'use client' 
 
 import { ScrollButton } from "./Buttons";
+import { useState, useEffect } from "react";
 
 const path = 'http://localhost:3000/'
 
 export default function PreView (){
+    const [isWindow, setIsWindow] = useState(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        if (!isWindow) {
+            setIsWindow(typeof window != 'undefined');
+        }
+    });
+
+    if (!isWindow) return <></>
+
     if (window.innerWidth > 900) {
         return (
             <section className="h-screen bg-cover bg-no-repeat bg-right-bottom  border-b-light-main border-b-[1px] max-[1146px]:h-auto " style={{backgroundImage: `url(${path}MainFon.png)`}}>

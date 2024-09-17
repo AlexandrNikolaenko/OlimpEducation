@@ -9,7 +9,8 @@ const nextConfig = {
             protocol: 'https',
             hostname: 'disk.yandex.ru',
         }]
-    }
+    },
+    distDir: 'dist'
 };
 
 export default nextConfig;
