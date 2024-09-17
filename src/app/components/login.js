@@ -46,8 +46,8 @@ export default function Login ({close}){
                         formData = Object.fromEntries(formData);
                         sendFormData('http://localhost:5000/login', 'POST', formData)
                         }}>
-                        <input placeholder="Адрес электронной почты" name="email" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl max-[1146px]:placeholder:text-base max-[640px]:placeholder:text-sm palceholder:font-normal"></input>
-                        <input placeholder="Пароль" name="password" type='password' className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
+                        <input id={1} placeholder="Адрес электронной почты" name="email" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl max-[1146px]:placeholder:text-base max-[640px]:placeholder:text-sm palceholder:font-normal"></input>
+                        <input id={2} placeholder="Пароль" name="password" type='password' className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <div className="flex flex-nowrap flex-row max-[360px]:flex-col justify-center gap-5 max-[640px]:gap-3 items-center">
                             <button type="submit" className="px-5 max-[1146px]:px-3.5 py-2.5 max-[1146px]:py-[6px] rounded-[10px] font-serif text-xl max-[1146px]:text-base max-[640px]:text-sm bg-medium w-auto max-[360px]:w-full">Войти</button>
                             <button onClick={(act) => {act.preventDefault(); setIsRegUser(false); setRegErr(false)}} className={'px-5 max-[1146px]:px-3.5 py-2.5 max-[1146px]:py-[6px] rounded-[10px] font-serif text-xl max-[1146px]:text-base max-[640px]:text-sm bg-bright w-auto max-[360px]:w-full'}>Зарегистрироваться</button>
@@ -74,9 +74,9 @@ export default function Login ({close}){
                         
                     }}>
                         <input placeholder="Никнейм" name="name" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
-                        <input placeholder="Email" name="email" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
+                        <input id={1} placeholder="Email" name="email" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         {isCorrectPass ? <></> : <p className="text-red-600 text-lg/[25px] max-[1146px]:text-base/[25px] max-[640px]:text-xs/[18px]">Введенный и повторенный пароли не совпадают</p>}
-                        <input placeholder="Пароль" name="password" type='password' className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
+                        <input id={2} placeholder="Пароль" name="password" type='password' className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <input placeholder="Повторите пароль" name="repassword" type="password" className="px-7 bg-transparent py-2.5 rounded-[10px] border-super-light border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input>
                         <div className="flex flex-nowrap flex-row max-[360px]:flex-col justify-center gap-5 max-[640px]:gap-3 items-center">
                             <button onClick={(act) => {act.preventDefault(); setIsRegUser(true); setRegErr(false)}} className="px-5 max-[1146px]:px-3.5 py-2.5 max-[1146px]:py-[6px] rounded-[10px] font-serif text-xl max-[1146px]:text-base max-[640px]:text-sm bg-medium max-[360px]:w-full">Войти</button>
