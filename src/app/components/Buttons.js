@@ -86,3 +86,9 @@ export function AsResolved({taskId, isDone}) {
         return <button className="font-sans text-2xl/[25px] max-[1146px]:text-lg/[25px] max-[700px]:text-sm/[18px] tracking-[0.02em] px-5 max-[1146px]:px-3.5 py-[5px] max-[1146px]:py-[4px] bg-medium rounded-[10px]" onClick={() => alert('Необходимо войти в систему')}>Отметить решенным</button>
     }
 }
+
+export function SubmitButton ({color, text}) {
+    return (
+        <button type={'submit'} className={`py-2.5 px-5 rounded-[10px] bg-${color}`}>{text}</button>
+    )
+}
