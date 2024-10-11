@@ -87,8 +87,11 @@ export function AsResolved({taskId, isDone}) {
     }
 }
 
-export function SubmitButton ({color, text}) {
+export function SubmitButton ({color, text, id}) {
+
     return (
-        <button type={'submit'} className={`py-2.5 px-5 rounded-[10px] bg-${color}`}>{text}</button>
+        <>
+            {id ? <button type={'submit'} className={`py-2.5 px-5 rounded-[10px] bg-${color}`} id={id}>{text}</button> : <button type={'submit'} className={`py-2.5 px-5 rounded-[10px] bg-${color}`}>{text}</button>}
+        </>
     )
 }

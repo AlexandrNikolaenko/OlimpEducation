@@ -15,7 +15,7 @@ export default function PersonalPage() {
         )
     } else {
         return (
-            <div className="wrapper mx-auto h-screen pt-24">
+            <div className="wrapper mx-auto min-h-screen pt-24">
                 <h1>Управление приложением</h1>
                 <div className={'flex flex-col border-y-[1px] divide-y-[1px] divide-white'}>
                     <ControlAccUsers />
@@ -190,6 +190,7 @@ function TakeAdminRights () {
                     e.preventDefault();
                     let formData = new FormData(document.getElementById('admin-user-form'));
                     formData = Object.fromEntries(formData);
+                    console.log(e.nativeEvent.submitter)
                     if (e.nativeEvent.submitter.id == 'take') {
                         sendFormData(`http://${host}:5000/takerights`, formData);
                     } else {
@@ -212,6 +213,7 @@ function TakeAdminRights () {
 }
 
 function ShowAllUsers () {
+    const [isOpen, setIsOpen] = useState(false)
     const [tableData, setTableData] = useState([]);
 
     async function showData () {
@@ -223,9 +225,9 @@ function ShowAllUsers () {
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
-                <button className='w-full text-left' onClick={() => showData()}>Показать всех пользователей</button>
+                <button className='w-full text-left' onClick={() => {showData(); setIsOpen(!isOpen)}}>Показать всех пользователей</button>
             </div>
-            <ul className={'flex flex-col divide-y-[1px] divide-medium'}>
+            <ul className={`flex flex-col divide-y-[1px] divide-medium ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'}`}>
                 <li className="grid grid-cols-6 py-3">
                     <p className="justify-self-center">userId</p>
                     <p className="justify-self-center">isAdmin</p>
@@ -237,12 +239,12 @@ function ShowAllUsers () {
                 {tableData.map(row => {
                     return (
                         <li className="grid grid-cols-6 py-3 items-center" key={row.userId}>
-                            <p className="justify-self-center">{row.userId}</p>
-                            <p className="justify-self-center">{`${row.isAdmin == '1'}`}</p>
-                            <p className="justify-self-center">{row.donetask_ids}</p>
-                            <p className="justify-self-center">{row.name}</p>
-                            <p className="justify-self-center">{row.password}</p>
-                            <p className="justify-self-center">{row.email}</p>
+                            <p className="justify-self-center overflow-hidden">{row.userId}</p>
+                            <p className="justify-self-center overflow-hidden">{`${row.isAdmin == '1'}`}</p>
+                            <p className="justify-self-center overflow-hidden">{row.donetask_ids}</p>
+                            <p className="justify-self-center overflow-hidden">{row.name}</p>
+                            <p className="justify-self-center overflow-hidden">{row.password}</p>
+                            <p className="justify-self-center overflow-hidden">{row.email}</p>
                         </li>
                     )
                 })}
