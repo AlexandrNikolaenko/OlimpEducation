@@ -1,7 +1,7 @@
 'use server'
 
-import { TaskImage } from "../components/taskImage";
-import { InfoPart, ButtonPart } from "../components/infoParts";
+import { TaskImage } from "../../components/taskImage";
+import { InfoPart, ButtonPart } from "../../components/infoParts";
 
 export default async function Page({params}) {
     let url, answerUrl;

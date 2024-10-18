@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import { SubmitButton } from "../components/Buttons";
 import { host } from "../components/host";
@@ -26,10 +26,72 @@ export function ControlAccUsers() {
     )
 }
 
+function dataProc(url, successMessage, noSuccessMessage, errMessage, event, id, method, isFile=false) {
+    event.preventDefault();
+    let formData = new FormData(document.getElementById(id));
+    let relFormData = formData;
+    formData = Object.fromEntries(formData);
+    sendFormData(`http://${host}:5000/${url}`, formData, successMessage, noSuccessMessage, errMessage, method, isFile, relFormData);
+}
+
+function sendFormData (url, formData, successMessage, noSuccessMessage, errMessage, method, isFile, relFormData) {
+    let json = JSON.stringify(formData);
+    fetch(url, {
+        method: method,
+        headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
+        },
+        body: json
+    })
+    .then((res) => res.json())
+    .then((data) => { 
+        if (data.res == 'success') alert(successMessage)
+        else alert(noSuccessMessage)
+    })
+    .catch((err) => {
+        alert(errMessage);
+        console.log(err);
+    });
+    console.log(URL.createObjectURL(formData.file));
+    if (isFile) {
+        fetch(`${url}file`, {
+            method: method,
+            body: relFormData
+        })
+        .then((res) => res.json())
+        .then((data) => { 
+            if (data.res == 'success') alert(successMessage)
+            else alert(noSuccessMessage)
+        })
+        .catch((err) => {
+            alert(errMessage);
+            console.log(err);
+        });
+    }
+}
+
+function InputField({placeholder, name}) {
+    return <input placeholder={placeholder} name={name} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+}
+
+function InputGridList({children}) {
+    return (
+        <div className="grid grid-cols-3 gap-5 w-full">
+            {children}
+        </div>
+    )
+}
+
+function OnceInput({placeholder, name}) {
+    return <input placeholder={placeholder} name={name} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+
+}
+
 function AddUser () {
     const [isOpen, setIsOpen] = useState(false);
 
-    function sendFormData (url, formData) {
+    function localSendFormData (url, formData) {
         let json = JSON.stringify(formData);
         fetch(url, {
             method: 'POST',
@@ -62,13 +124,13 @@ function AddUser () {
                     e.preventDefault();
                     let formData = new FormData(document.getElementById('add-user-form'));
                     formData = Object.fromEntries(formData);
-                    sendFormData(`http://${host}:5000/signup`, formData)
+                    localSendFormData(`http://${host}:5000/signup`, formData)
                 }}>
-                <div className='w-full grid grid-cols-3 gap-x-5 items-center'>
-                    <input placeholder={'Name'} name={'name'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                    <input placeholder={'Email'} name={'email'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                    <input placeholder={'Password'} name={'password'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                </div>
+                <InputGridList>
+                    <InputField placeholder={'Name'} name={'name'}/>
+                    <InputField placeholder={'Email'} name={'email'}/>
+                    <InputField placeholder={'Password'} name={'password'}/>
+                </InputGridList>
                 <SubmitButton color={'bright'} text={'Зарегистрироваться'}/>
             </form>
         </div>
@@ -77,31 +139,6 @@ function AddUser () {
 
 function RemoveUser () {
     const [isOpen, setIsOpen] = useState(false);
-
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'DELETE',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json,
-            cache: 'no-cache'
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success'){
-                alert('Пользователь успешно удален')
-            } else {
-                alert('Такого пользователя не существует')
-            }
-        })
-        .catch((err) => {
-            alert('Ошибка запроса');
-            console.log(err);
-        })
-    }
 
     return (
         <div className='flex flex-col gap-y-5'>
@@ -112,16 +149,12 @@ function RemoveUser () {
                 </button>
             </div>
             <form className={`flex-col gap-y-5 px-7 ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} items-end`} id={'remove-user-form'} onSubmit={function (e)  {
-                    e.preventDefault();
-                    console.log(e.nativeEvent.submitter.type);
-                    let formData = new FormData(document.getElementById('remove-user-form'));
-                    formData = Object.fromEntries(formData);
-                    sendFormData(`http://${host}:5000/removeuser`, formData)
+                    dataProc('removeuser', 'Пользователь успешно удален', 'Такого пользователя не существует', 'Ошибка запроса', e, 'remove-user-form', 'DELETE')
                 }}>
                 <div className='w-full flex gap-x-5 items-center max-w-[752.33px]'>
-                    <input placeholder={'User ID'} name={'userid'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                    <InputField placeholder={'User ID'} name={'userid'}/>
                     <span className='w-fit'>or</span>
-                    <input placeholder={'Email'} name={'email'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                    <InputField placeholder={'Email'} name={'email'} />
                 </div>
                 <SubmitButton color={'bright'} text={'Удалить'}/>
             </form>
@@ -132,31 +165,6 @@ function RemoveUser () {
 function TakeAdminRights () {
     const [isOpen, setIsOpen] = useState(false);
 
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json,
-            cache: 'no-cache'
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success'){
-                alert('Запрос выполнен успешно')
-            } else {
-                alert('Запрос не выполнен')
-            }
-        })
-        .catch((err) => {
-            alert('Ошибка запроса');
-            console.log(err);
-        })
-    }
-
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
@@ -166,21 +174,17 @@ function TakeAdminRights () {
                 </button>
             </div>
             <form className={`flex-col gap-y-5 px-7 ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} items-end`} id={'admin-user-form'} onSubmit={function (e)  {
-                    e.preventDefault();
-                    let formData = new FormData(document.getElementById('admin-user-form'));
-                    formData = Object.fromEntries(formData);
-                    console.log(e.nativeEvent.submitter)
                     if (e.nativeEvent.submitter.id == 'take') {
-                        sendFormData(`http://${host}:5000/takerights`, formData);
+                        dataProc('takerights', 'Запрос выполнен успешно', 'Запрос не выполнен', 'Ошибка запроса', e, 'admin-user-form', 'POST')
                     } else {
-                        sendFormData(`http://${host}:5000/recallrights`, formData);
+                        dataProc('recallrights', 'Запрос выполнен успешно', 'Запрос не выполнен', 'Ошибка запроса', e, 'admin-user-form', 'POST')
                     }
                     
                 }}>
                 <div className='w-full flex gap-x-5 items-center max-w-[752.33px]'>
-                    <input placeholder={'User ID'} name={'userid'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                    <InputField placeholder={'User ID'} name={'userid'}/>
                     <span className='w-fit'>or</span>
-                    <input placeholder={'Email'} name={'email'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                    <InputField placeholder={'Email'} name={'email'}/>
                 </div>
                 <div className="flex gap-x-5">
                     <SubmitButton color={'bright'} id={'take'} text={'Предоставить'}/>
@@ -272,33 +276,63 @@ function ControlTableTask () {
     )
 }
 
+function AddTags() {
+    const [tags, setTags] = useState([{id: 1}]);
+
+    function addT(e) {
+        e.preventDefault();
+        let newTags = [];
+        tags.forEach((elem) => {
+            newTags.push(elem);
+        });
+        newTags.push({id: newTags[newTags.length - 1].id + 1});
+        setTags(newTags);
+    }
+
+    function removeT(e) {
+        e.preventDefault();
+        if (tags.length > 1) {
+            let newTags = [];
+            tags.forEach((elem) => {
+                newTags.push(elem);
+            });
+            newTags.pop();
+            setTags(newTags);
+        } else return 
+    }
+
+    return (
+        <>
+            <div className="flex gap-x-5 items-center">
+                <p>Добавить тэг</p>
+                <div className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px] cursor-pointer" style={{backgroundImage: 'url(/plus.svg)'}} onClick={(e) => addT(e)}></div>
+                <div className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px] cursor-pointer" style={{backgroundImage: 'url(/minus.svg)'}} onClick={(e) => removeT(e)}></div>
+            </div>
+            <InputGridList>
+                {tags.map(tag => <li key={tag.id} className="list-none"><input placeholder="tag" name="tag" className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input></li>)}
+            </InputGridList>
+        </>
+    )
+
+}
+
+function AddFileInput() {
+    const fileForm = useRef(null);
+
+    return (
+        <>
+        <button className="w-full px-5 py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed" onClick={
+            (e) => {
+                e.preventDefault();
+                fileForm.current.click();
+            }
+        }>Загрузить файл</button>
+        <input type="file" ref={fileForm} accept=".jpg" name={'file'} placeholder="Загрузить файл" className="w-full px- py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed hidden" multiple={false}></input></>
+    )
+}
+
 function AddTask() {
     const [isOpen, setIsOpen] = useState(false);
-
-    function addFile(id) {
-        return
-    }
-
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success') alert('Задание успешно удалено')
-            else alert('Произошла ошибка')
-        })
-        .catch((err) => {
-            alert('Произошла ошибка');
-            console.log(err);
-        })
-    }
     
     return (
         <div className='py-5'>
@@ -308,27 +342,18 @@ function AddTask() {
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
                 </button>
             </div>
-            <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'remove-task-form'} onSubmit={function (e){
-                e.preventDefault();
-                let formData = new FormData(document.getElementById('remove-task-form'));
-                formData = Object.fromEntries(formData);
-                sendFormData(`http://${host}:5000/removetask`, formData);
-                addFile(formData.id);
+            
+            <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden hidden'} flex-col gap-y-5 items-start`} id={'add-task-form'} onSubmit={function (e){
+                dataProc('addnewtask', 'Задание успешно добавлено', 'Произошла ошибка', 'Произошла ошибка', e, 'add-task-form', 'POST', true)
             }}>
-                <div className={'flex gap-x-5 w-full'}>
-                    <input placeholder="Task ID" name={'_id'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                    <input placeholder="Class" name={'class'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                    <input placeholder="Level" name={'level'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                </div>
-                <div className="flex gap-x-5 items-center">
-                    <p>Добавить тэг</p>
-                    <button className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px]" style={{backgroundImage: 'url(/plus.svg)'}}></button>
-                    <button className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px]" style={{backgroundImage: 'url(/minus.svg)'}}></button>
-                </div>
-                <div>
-
-                </div>
-                <input type="file" accept=".pdf" placeholder="Загрузить файл"></input>
+                <InputGridList>
+                    <InputField placeholder={'Task ID'} name={'_id'}/>
+                    <InputField placeholder={'Class'} name={'class'}/>
+                    <InputField placeholder={'Level'} name={'level'}/>
+                </InputGridList>
+                <AddTags/>
+                <p>Добавьте файл в формате .jpg, имя файла должно быть следующим: ID*id задания*, например ID0001.jpg</p>
+                <AddFileInput />
                 <SubmitButton color={'bright'} text={'Добавить'}/>
             </form>
         </div>
@@ -336,30 +361,6 @@ function AddTask() {
 }
 function RemoveTask() {
     const [isOpen, setIsOpen] = useState(false);
-
-    function removeFile(id) {
-    }
-
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success') alert('Задание успешно удалено')
-            else alert('Произошла ошибка')
-        })
-        .catch((err) => {
-            alert('Произошла ошибка');
-            console.log(err);
-        })
-    }
     
     return (
         <div className='py-5'>
@@ -370,14 +371,10 @@ function RemoveTask() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'remove-task-form'} onSubmit={function (e){
-                e.preventDefault();
-                let formData = new FormData(document.getElementById('remove-task-form'));
-                formData = Object.fromEntries(formData);
-                sendFormData(`http://${host}:5000/removetask`, formData);
-                removeFile(formData.id);
+                dataProc('addtask', 'Задание успешно удалено', 'Произошла ошибка', 'Произошла ошибка', e, 'remove-task-form', 'DELETE');
             }}>
                 <p>Введите ID задания</p>
-                <input placeholder="Task ID" name={'id'} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                <OnceInput placeholder={"Task ID"} name={'id'}/>
                 <SubmitButton color={'bright'} text={'Удалить'}/>
             </form>
         </div>
@@ -386,27 +383,6 @@ function RemoveTask() {
 
 function EditTask() {
     const [isOpen, setIsOpen] = useState(false);
-
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success') alert('Задание успешно отредактировано')
-            else alert('Произошла ошибка')
-        })
-        .catch((err) => {
-            alert('Произошла ошибка');
-            console.log(err);
-        })
-    }
     
     return (
         <div className='py-5'>
@@ -416,24 +392,17 @@ function EditTask() {
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
                 </button>
             </div>
-            <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'remove-task-form'} onSubmit={function (e){
-                e.preventDefault();
-                let formData = new FormData(document.getElementById('remove-task-form'));
-                formData = Object.fromEntries(formData);
-                sendFormData(`http://${host}:5000/removetask`, formData);
-                removeFile(formData.id);
+            <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden hidden'} flex-col gap-y-5 items-start`} id={'edit-task-form'} onSubmit={function (e){
+                dataProc('edittask', 'Задание успешно отредактировано', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-task-form', 'POST')
             }}>
-                <input placeholder="Task ID" name={'_id'} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                <OnceInput placeholder={'Task ID'} name={'_id'}/>
                 <p>Ввести измененные данные</p>
-                <div className="flex gap-x-5">
-                    <input placeholder="Class" name={'class'} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                    <input placeholder="Level" name={'level'} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
-                </div>
-                <div className="flex gap-x-5 items-center">
-                    <p>Добавить тэг</p>
-                    <button className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px]" style={{backgroundImage: 'url(/plus.svg)'}}></button>
-                    <button className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px]" style={{backgroundImage: 'url(/minus.svg)'}}></button>
-                </div>
+                <InputGridList>
+                    <InputField placeholder={'Class'} name={'class'}/>
+                    <InputField placeholder={'Level'} name={'level'}/>
+                </InputGridList>
+                <AddTags />
+                <AddFileInput />
                 <SubmitButton color={'bright'} text={'Редактировать'}/>
             </form>
         </div>
@@ -502,27 +471,6 @@ function ControlTableAnswers () {
 
 function AddAnswer() {
     const [isOpen, setIsOpen] = useState(false);
-
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success') alert('Ответ успешно добавлен')
-            else alert('Произошла ошибка')
-        })
-        .catch((err) => {
-            alert('Произошла ошибка');
-            console.log(err);
-        })
-    }
     
     return (
         <div className='py-5'>
@@ -533,10 +481,7 @@ function AddAnswer() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'add-answer-form'} onSubmit={function (e){
-                e.preventDefault();
-                let formData = new FormData(document.getElementById('add-answer-form'));
-                formData = Object.fromEntries(formData);
-                sendFormData(`http://${host}:5000/addanswer`, formData);
+                dataProc('addanswer', 'Ответ успешно добавлен', 'Произошла ошибка', 'Произошла ошибка', e, 'add-answer-form', 'POST');
             }}>
                 <p>Добавьте файл, названный так, чтобы название оканчивалось номером задания</p>
                 <SubmitButton color={'bright'} text={'Добавить'}/>
@@ -546,27 +491,6 @@ function AddAnswer() {
 }
 function RemoveAnswer() {
     const [isOpen, setIsOpen] = useState(false);
-
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success') alert('Ответ успешно удален')
-            else alert('Произошла ошибка')
-        })
-        .catch((err) => {
-            alert('Произошла ошибка');
-            console.log(err);
-        })
-    }
     
     return (
         <div className='py-5'>
@@ -577,13 +501,10 @@ function RemoveAnswer() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'remove-answer-form'} onSubmit={function (e){
-                e.preventDefault();
-                let formData = new FormData(document.getElementById('remove-answer-form'));
-                formData = Object.fromEntries(formData);
-                sendFormData(`http://${host}:5000/removeanswer`, formData);
+                dataProc('removeanswer', 'Ответ успешно удален', 'Произошла ошибка', 'Произошла ошибка', e, 'remove-answer-form', 'DELETE');
             }}>
                 <p>Введите ID задания</p>
-                <input placeholder="Task ID" name={'id'} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                <OnceInput placeholder={'Task ID'} name={'id'}/>
                 <SubmitButton color={'bright'} text={'Удалить'}/>
             </form>
         </div>
@@ -592,27 +513,6 @@ function RemoveAnswer() {
 
 function EditAnswer() {
     const [isOpen, setIsOpen] = useState(false);
-
-    function sendFormData (url, formData) {
-        let json = JSON.stringify(formData);
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"
-            },
-            body: json
-        })
-        .then((res) => res.json())
-        .then((data) => { 
-            if (data.res == 'success') alert('Ответ успешно отредактирован')
-            else alert('Произошла ошибка')
-        })
-        .catch((err) => {
-            alert('Произошла ошибка');
-            console.log(err);
-        })
-    }
     
     return (
         <div className='py-5'>
@@ -623,13 +523,10 @@ function EditAnswer() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'edit-answer-form'} onSubmit={function (e){
-                e.preventDefault();
-                let formData = new FormData(document.getElementById('edit-answer-form'));
-                formData = Object.fromEntries(formData);
-                sendFormData(`http://${host}:5000/editanswer`, formData);
+                dataProc('editanswer', 'Ответ успешно отредактирован', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-answer-form', 'POST');
             }}>
                 <p>Введите ID задания</p>
-                <input placeholder="Task ID" name={'id'} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+                <OnceInput placeholder={'Task ID'} name={'id'}/>
                 <SubmitButton color={'bright'} text={'Редактировать'}/>
             </form>
         </div>
