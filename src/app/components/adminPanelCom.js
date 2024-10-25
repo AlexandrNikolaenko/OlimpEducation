@@ -53,7 +53,6 @@ function sendFormData (url, formData, successMessage, noSuccessMessage, errMessa
         alert(errMessage);
         console.log(err);
     });
-    console.log(URL.createObjectURL(formData.file));
     if (isFile) {
         fetch(`${url}file`, {
             method: method,
@@ -61,7 +60,7 @@ function sendFormData (url, formData, successMessage, noSuccessMessage, errMessa
         })
         .then((res) => res.json())
         .then((data) => { 
-            if (data.res == 'success') alert(successMessage)
+            if (data.res == 'success') alert('Файл успешно добавлен')
             else alert(noSuccessMessage)
         })
         .catch((err) => {
@@ -72,7 +71,7 @@ function sendFormData (url, formData, successMessage, noSuccessMessage, errMessa
 }
 
 function InputField({placeholder, name}) {
-    return <input placeholder={placeholder} name={name} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+    return <input placeholder={placeholder} name={name} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'} autocomplete="off"></input>
 }
 
 function InputGridList({children}) {
@@ -84,7 +83,7 @@ function InputGridList({children}) {
 }
 
 function OnceInput({placeholder, name}) {
-    return <input placeholder={placeholder} name={name} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input>
+    return <input placeholder={placeholder} name={name} className={'max-w-72 px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}autocomplete="off"></input>
 
 }
 
@@ -309,15 +308,16 @@ function AddTags() {
                 <div className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px] cursor-pointer" style={{backgroundImage: 'url(/minus.svg)'}} onClick={(e) => removeT(e)}></div>
             </div>
             <InputGridList>
-                {tags.map(tag => <li key={tag.id} className="list-none"><input placeholder="tag" name="tag" className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'}></input></li>)}
+                {tags.map(tag => <li key={tag.id} className="list-none"><input placeholder="tag" name={`tag${tag.id}`} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'} autocomplete="off"></input></li>)}
             </InputGridList>
         </>
     )
 
 }
 
-function AddFileInput() {
+function AddFileInput({ name, formId, setIsEmpty, accept=".jpg" }) {
     const fileForm = useRef(null);
+    const [nameFile, setNameFile] = useState(name);
 
     return (
         <>
@@ -326,13 +326,18 @@ function AddFileInput() {
                 e.preventDefault();
                 fileForm.current.click();
             }
-        }>Загрузить файл</button>
-        <input type="file" ref={fileForm} accept=".jpg" name={'file'} placeholder="Загрузить файл" className="w-full px- py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed hidden" multiple={false}></input></>
+        }>{nameFile}</button>
+        <input type="file" ref={fileForm} accept={accept} name={'file'} id={formId} placeholder="Загрузить файл" className="w-full px- py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed hidden" multiple={false} autocomplete="off" onChange={(e) => {
+            e.preventDefault();
+            setNameFile(e.target.files[0].name);
+            setIsEmpty(false);
+        }}></input></>
     )
 }
 
 function AddTask() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
         <div className='py-5'>
@@ -344,7 +349,7 @@ function AddTask() {
             </div>
             
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden hidden'} flex-col gap-y-5 items-start`} id={'add-task-form'} onSubmit={function (e){
-                dataProc('addnewtask', 'Задание успешно добавлено', 'Произошла ошибка', 'Произошла ошибка', e, 'add-task-form', 'POST', true)
+                dataProc('addnewtask', 'Задание успешно добавлено', 'Произошла ошибка', 'Произошла ошибка', e, 'add-task-form', 'POST', !isEmptyFile);
             }}>
                 <InputGridList>
                     <InputField placeholder={'Task ID'} name={'_id'}/>
@@ -353,7 +358,7 @@ function AddTask() {
                 </InputGridList>
                 <AddTags/>
                 <p>Добавьте файл в формате .jpg, имя файла должно быть следующим: ID*id задания*, например ID0001.jpg</p>
-                <AddFileInput />
+                <AddFileInput name={'Загрузить файл'} formId={'inputfile1'} setIsEmpty={setIsEmptyFile}/>
                 <SubmitButton color={'bright'} text={'Добавить'}/>
             </form>
         </div>
@@ -371,7 +376,7 @@ function RemoveTask() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'remove-task-form'} onSubmit={function (e){
-                dataProc('addtask', 'Задание успешно удалено', 'Произошла ошибка', 'Произошла ошибка', e, 'remove-task-form', 'DELETE');
+                dataProc('removetaskadmin', 'Задание успешно удалено', 'Произошла ошибка', 'Произошла ошибка', e, 'remove-task-form', 'DELETE');
             }}>
                 <p>Введите ID задания</p>
                 <OnceInput placeholder={"Task ID"} name={'id'}/>
@@ -383,6 +388,7 @@ function RemoveTask() {
 
 function EditTask() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
         <div className='py-5'>
@@ -393,7 +399,7 @@ function EditTask() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden hidden'} flex-col gap-y-5 items-start`} id={'edit-task-form'} onSubmit={function (e){
-                dataProc('edittask', 'Задание успешно отредактировано', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-task-form', 'POST')
+                dataProc('edittask', 'Задание успешно отредактировано', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-task-form', 'POST', !isEmptyFile)
             }}>
                 <OnceInput placeholder={'Task ID'} name={'_id'}/>
                 <p>Ввести измененные данные</p>
@@ -402,7 +408,7 @@ function EditTask() {
                     <InputField placeholder={'Level'} name={'level'}/>
                 </InputGridList>
                 <AddTags />
-                <AddFileInput />
+                <AddFileInput name='Загрузить файл' formId={'inputfile2'} setIsEmpty={setIsEmptyFile}/>
                 <SubmitButton color={'bright'} text={'Редактировать'}/>
             </form>
         </div>
@@ -471,6 +477,7 @@ function ControlTableAnswers () {
 
 function AddAnswer() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
         <div className='py-5'>
@@ -481,9 +488,10 @@ function AddAnswer() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'add-answer-form'} onSubmit={function (e){
-                dataProc('addanswer', 'Ответ успешно добавлен', 'Произошла ошибка', 'Произошла ошибка', e, 'add-answer-form', 'POST');
+                dataProc('addanswer', 'Ответ успешно добавлен', 'Произошла ошибка', 'Произошла ошибка', e, 'add-answer-form', 'POST', !isEmptyFile);
             }}>
                 <p>Добавьте файл, названный так, чтобы название оканчивалось номером задания</p>
+                <AddFileInput name={'Загрузить файл'} formId={'add-answer-form'} setIsEmpty={setIsEmptyFile} accept=".pdf"/>
                 <SubmitButton color={'bright'} text={'Добавить'}/>
             </form>
         </div>
@@ -513,6 +521,7 @@ function RemoveAnswer() {
 
 function EditAnswer() {
     const [isOpen, setIsOpen] = useState(false);
+    const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
         <div className='py-5'>
@@ -523,10 +532,10 @@ function EditAnswer() {
                 </button>
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'edit-answer-form'} onSubmit={function (e){
-                dataProc('editanswer', 'Ответ успешно отредактирован', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-answer-form', 'POST');
+                dataProc('editanswer', 'Ответ успешно отредактирован', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-answer-form', 'POST', !isEmptyFile);
             }}>
                 <p>Введите ID задания</p>
-                <OnceInput placeholder={'Task ID'} name={'id'}/>
+                <AddFileInput name={'Загрузить файл'} formId={'edit-answer-form'} setIsEmpty={setIsEmptyFile}/>
                 <SubmitButton color={'bright'} text={'Редактировать'}/>
             </form>
         </div>
