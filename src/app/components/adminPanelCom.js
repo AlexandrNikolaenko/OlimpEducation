@@ -535,7 +535,8 @@ function EditAnswer() {
                 dataProc('editanswer', 'Ответ успешно отредактирован', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-answer-form', 'POST', !isEmptyFile);
             }}>
                 <p>Введите ID задания</p>
-                <AddFileInput name={'Загрузить файл'} formId={'edit-answer-form'} setIsEmpty={setIsEmptyFile}/>
+                <OnceInput placeholder={'Task ID'} name={'id'}/>
+                <AddFileInput name={'Загрузить файл'} formId={'edit-answer-form'} accept=".pdf" setIsEmpty={setIsEmptyFile}/>
                 <SubmitButton color={'bright'} text={'Редактировать'}/>
             </form>
         </div>
