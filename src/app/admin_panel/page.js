@@ -30,8 +30,8 @@ export default function PersonalPage() {
         )
     } else {
         return (
-            <div className="wrapper mx-auto min-h-screen pt-24">
-                <h1>Управление приложением</h1>
+            <div className="wrapper mx-auto min-h-screen pt-24 max-[1280px]:px-5">
+                <h1 className="text-bright font-help text-3xl max-[834px]:text-2xl max-[380]:text-lg pb-10">Управление приложением</h1>
                 <div className={'flex flex-col border-y-[1px] divide-y-[1px] divide-white'}>
                     <ControlAccUsers />
                     <ControlTasks />

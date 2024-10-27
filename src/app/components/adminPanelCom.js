@@ -1,8 +1,7 @@
 'use client'
 
 import { useState, useRef } from "react";
-import Image from "next/image";
-import { SubmitButton } from "../components/Buttons";
+import { SubmitButton, ArrowButton } from "../components/Buttons";
 import { host } from "../components/host";
 
 export function ControlAccUsers() {
@@ -11,10 +10,11 @@ export function ControlAccUsers() {
     return (
         <div className='py-5 flex flex-col gap-y-5 justify-center'>
             <div className='flex justify-between items-center'>
-                <p>Управление аккаунтами пользователей</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Управление аккаунтами пользователей</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
             <div className={`flex-col gap-y-2.5 px-7 ${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} transition-all duration-200`}>
                 <AddUser />
@@ -24,6 +24,16 @@ export function ControlAccUsers() {
             </div>
         </div>
     )
+}
+
+// text-xl max-[834px]:text-base max-[380px]:text-xs
+
+function Text({children}) {
+    return <p className="font-sans text-xl max-md:text-base max-sm:text-xs">{children}</p>
+}
+
+function TableText({children}) {
+    return <div className="w-full overflow-hidden"><p className="font-serif text-base max-md:text-xs max-sm:text-[8px] text-center">{children}</p></div>
 }
 
 function dataProc(url, successMessage, noSuccessMessage, errMessage, event, id, method, isFile=false) {
@@ -76,7 +86,7 @@ function InputField({placeholder, name}) {
 
 function InputGridList({children}) {
     return (
-        <div className="grid grid-cols-3 gap-5 w-full">
+        <div className="grid grid-cols-3 max-md:grid-cols-1 gap-5 w-full">
             {children}
         </div>
     )
@@ -114,10 +124,11 @@ function AddUser () {
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
-                <p>Добавить пользователя</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Добавить пользователя</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
             <form className={`flex-col gap-y-5 px-7 ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} items-end`} id={'add-user-form'} onSubmit={function (e)  {
                     e.preventDefault();
@@ -142,15 +153,13 @@ function RemoveUser () {
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
-                <p>Удалить пользователя</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
-                    <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                <Text>Удалить пользователя</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
             </div>
             <form className={`flex-col gap-y-5 px-7 ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} items-end`} id={'remove-user-form'} onSubmit={function (e)  {
                     dataProc('removeuser', 'Пользователь успешно удален', 'Такого пользователя не существует', 'Ошибка запроса', e, 'remove-user-form', 'DELETE')
                 }}>
-                <div className='w-full flex gap-x-5 items-center max-w-[752.33px]'>
+                <div className='w-full flex flex-row max-md:flex-col gap-5 items-center max-w-[752.33px]'>
                     <InputField placeholder={'User ID'} name={'userid'}/>
                     <span className='w-fit'>or</span>
                     <InputField placeholder={'Email'} name={'email'} />
@@ -167,12 +176,10 @@ function TakeAdminRights () {
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
-                <p>Предоставление прав админа</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
-                    <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                <Text>Предоставление прав админа</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
             </div>
-            <form className={`flex-col gap-y-5 px-7 ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} items-end`} id={'admin-user-form'} onSubmit={function (e)  {
+            <form className={`flex-col gap-5 px-7 ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} items-end`} id={'admin-user-form'} onSubmit={function (e)  {
                     if (e.nativeEvent.submitter.id == 'take') {
                         dataProc('takerights', 'Запрос выполнен успешно', 'Запрос не выполнен', 'Ошибка запроса', e, 'admin-user-form', 'POST')
                     } else {
@@ -180,7 +187,7 @@ function TakeAdminRights () {
                     }
                     
                 }}>
-                <div className='w-full flex gap-x-5 items-center max-w-[752.33px]'>
+                <div className='w-full flex flex-row max-md:flex-col gap-x-5 items-center max-w-[752.33px]'>
                     <InputField placeholder={'User ID'} name={'userid'}/>
                     <span className='w-fit'>or</span>
                     <InputField placeholder={'Email'} name={'email'}/>
@@ -207,26 +214,26 @@ function ShowAllUsers () {
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
-                <button className='w-full text-left' onClick={() => {showData(); setIsOpen(!isOpen)}}>Показать всех пользователей</button>
+                <button className='w-full text-left font-sans text-xl max-md:text-base max-sm:text-xs' onClick={() => {showData(); setIsOpen(!isOpen)}}>Показать всех пользователей</button>
             </div>
-            <ul className={`flex flex-col divide-y-[1px] divide-medium ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'}`}>
-                <li className="grid grid-cols-6 py-3">
-                    <p className="justify-self-center">userId</p>
-                    <p className="justify-self-center">isAdmin</p>
-                    <p className="justify-self-center">donetask_ids</p>
-                    <p className="justify-self-center">name</p>
-                    <p className="justify-self-center">password</p>
-                    <p className="justify-self-center">email</p>
+            <ul className={`flex flex-col divide-y-[1px] divide-medium ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} w-full overflow-x-scroll`}>
+                <li className="grid grid-cols-6 py-3 min-w-[310px]">
+                    <TableText>userId</TableText>
+                    <TableText>isAdmin</TableText>
+                    <TableText>donetask_ids</TableText>
+                    <TableText>name</TableText>
+                    <TableText>password</TableText>
+                    <TableText>email</TableText>
                 </li>
                 {tableData.map(row => {
                     return (
-                        <li className="grid grid-cols-6 py-3 items-center" key={row.userId}>
-                            <p className="justify-self-center overflow-hidden">{row.userId}</p>
-                            <p className="justify-self-center overflow-hidden">{`${row.isAdmin == '1'}`}</p>
-                            <p className="justify-self-center overflow-hidden">{row.donetask_ids}</p>
-                            <p className="justify-self-center overflow-hidden">{row.name}</p>
-                            <p className="justify-self-center overflow-hidden">{row.password}</p>
-                            <p className="justify-self-center overflow-hidden">{row.email}</p>
+                        <li className="grid grid-cols-6 py-3 items-center min-w-[310px]" key={row.userId}>
+                            <TableText>{row.userId}</TableText>
+                            <TableText>{`${row.isAdmin == '1'}`}</TableText>
+                            <TableText>{row.donetask_ids}</TableText>
+                            <TableText>{row.name}</TableText>
+                            <TableText>{row.password}</TableText>
+                            <TableText>{row.email}</TableText>
                         </li>
                     )
                 })}
@@ -241,12 +248,13 @@ export function ControlTasks() {
     return (
         <div className='py-5'>
             <div className='flex justify-between items-center'>
-                <p>Управление базой заданий</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Управление базой заданий</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
-            <div className={`flex ${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col`}>
+            <div className={`flex ${isOpen ? 'h-auto flex pt-1' : 'h-0 overflow-hidden none pt-0'} flex-col px-7`}>
                 <ControlTableTask />
                 <ControlTableAnswers />
             </div>
@@ -258,14 +266,15 @@ function ControlTableTask () {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className='py-5'>
+        <div className='py-2.5'>
             <div className='flex justify-between items-center'>
-                <p>Управление таблицой заданий</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Управление таблицой заданий</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
-            <div className={`flex ${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col`}>
+            <div className={`${isOpen ? 'h-auto flex gap-3' : 'h-0 overflow-hidden none'} flex-col pt-2.5 px-6`}>
                 <AddTask />
                 <RemoveTask />
                 <EditTask />
@@ -303,7 +312,7 @@ function AddTags() {
     return (
         <>
             <div className="flex gap-x-5 items-center">
-                <p>Добавить тэг</p>
+                <Text>Добавить тэг</Text>
                 <div className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px] cursor-pointer" style={{backgroundImage: 'url(/plus.svg)'}} onClick={(e) => addT(e)}></div>
                 <div className="bg-cover bg-no-repeat bg-center w-[43px] h-[43px] cursor-pointer" style={{backgroundImage: 'url(/minus.svg)'}} onClick={(e) => removeT(e)}></div>
             </div>
@@ -340,12 +349,13 @@ function AddTask() {
     const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
-        <div className='py-5'>
+        <div>
             <div className='flex justify-between items-center'>
-                <p>Добавить задание</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Добавить задание</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
             
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden hidden'} flex-col gap-y-5 items-start`} id={'add-task-form'} onSubmit={function (e){
@@ -357,7 +367,7 @@ function AddTask() {
                     <InputField placeholder={'Level'} name={'level'}/>
                 </InputGridList>
                 <AddTags/>
-                <p>Добавьте файл в формате .jpg, имя файла должно быть следующим: ID*id задания*, например ID0001.jpg</p>
+                <Text>Добавьте файл в формате .jpg, имя файла должно быть следующим: ID*id задания*, например ID0001.jpg</Text>
                 <AddFileInput name={'Загрузить файл'} formId={'inputfile1'} setIsEmpty={setIsEmptyFile}/>
                 <SubmitButton color={'bright'} text={'Добавить'}/>
             </form>
@@ -368,17 +378,18 @@ function RemoveTask() {
     const [isOpen, setIsOpen] = useState(false);
     
     return (
-        <div className='py-5'>
+        <div>
             <div className='flex justify-between items-center'>
-                <p>Удалить задание</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Удалить задание</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'remove-task-form'} onSubmit={function (e){
                 dataProc('removetaskadmin', 'Задание успешно удалено', 'Произошла ошибка', 'Произошла ошибка', e, 'remove-task-form', 'DELETE');
             }}>
-                <p>Введите ID задания</p>
+                <Text>Введите ID задания</Text>
                 <OnceInput placeholder={"Task ID"} name={'id'}/>
                 <SubmitButton color={'bright'} text={'Удалить'}/>
             </form>
@@ -391,18 +402,16 @@ function EditTask() {
     const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
-        <div className='py-5'>
+        <div>
             <div className='flex justify-between items-center'>
-                <p>Редактиовать задание</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
-                    <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                <Text>Редактиовать задание</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden hidden'} flex-col gap-y-5 items-start`} id={'edit-task-form'} onSubmit={function (e){
                 dataProc('edittask', 'Задание успешно отредактировано', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-task-form', 'POST', !isEmptyFile)
             }}>
                 <OnceInput placeholder={'Task ID'} name={'_id'}/>
-                <p>Ввести измененные данные</p>
+                <Text>Ввести измененные данные</Text>
                 <InputGridList>
                     <InputField placeholder={'Class'} name={'class'}/>
                     <InputField placeholder={'Level'} name={'level'}/>
@@ -428,24 +437,24 @@ function ShowAllTask() {
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
-                <button className='w-full text-left' onClick={() => {showData(); setIsOpen(!isOpen)}}>Показать все задания</button>
+                <button className='w-full text-left font-sans text-xl max-md:text-base max-sm:text-xs' onClick={() => {showData(); setIsOpen(!isOpen)}}>Показать все задания</button>
             </div>
-            <ul className={`flex flex-col divide-y-[1px] divide-medium ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'}`}>
-                <li className="grid grid-cols-5 py-3">
-                    <p className="justify-self-center">id</p>
-                    <p className="justify-self-center">_id</p>
-                    <p className="justify-self-center">class</p>
-                    <p className="justify-self-center">level</p>
-                    <p className="justify-self-center">tags</p>
+            <ul className={`flex flex-col divide-y-[1px] divide-medium ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} w-full overflow-x-scroll`}>
+                <li className="grid grid-cols-5 py-3 min-w-[310px]">
+                    <TableText>id</TableText>
+                    <TableText>_id</TableText>
+                    <TableText>class</TableText>
+                    <TableText>level</TableText>
+                    <TableText>tags</TableText>
                 </li>
                 {tableData.map(row => {
                     return (
-                        <li className="grid grid-cols-5 py-3 items-center" key={row._id}>
-                            <p className="justify-self-center">{row.id}</p>
-                            <p className="justify-self-center">{row._id}</p>
-                            <p className="justify-self-center">{row.class}</p>
-                            <p className="justify-self-center">{row.level}</p>
-                            <p className="justify-self-center">{row.tags}</p>
+                        <li className="grid grid-cols-5 py-3 items-center min-w-[310px]" key={row._id}>
+                            <TableText>{row.id}</TableText>
+                            <TableText>{row._id}</TableText>
+                            <TableText>{row.class}</TableText>
+                            <TableText>{row.level}</TableText>
+                            <TableText>{row.tags}</TableText>
                         </li>
                     )
                 })}
@@ -458,14 +467,15 @@ function ControlTableAnswers () {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className='py-5'>
+        <div className='py-2.5'>
             <div className='flex justify-between items-center'>
-                <p>Управление таблицой ответов</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Управление таблицой ответов</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
-            <div className={`flex ${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col`}>
+            <div className={`flex ${isOpen ? 'h-auto flex gap-y-3' : 'h-0 overflow-hidden none'} flex-col pt-2.5 px-6`}>
                 <AddAnswer />
                 <RemoveAnswer />
                 <EditAnswer />
@@ -480,17 +490,18 @@ function AddAnswer() {
     const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
-        <div className='py-5'>
+        <div>
             <div className='flex justify-between items-center'>
-                <p>Добавить ответ</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Добавить ответ</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'add-answer-form'} onSubmit={function (e){
                 dataProc('addanswer', 'Ответ успешно добавлен', 'Произошла ошибка', 'Произошла ошибка', e, 'add-answer-form', 'POST', !isEmptyFile);
             }}>
-                <p>Добавьте файл, названный так, чтобы название оканчивалось номером задания</p>
+                <Text>Добавьте файл, названный так, чтобы название оканчивалось номером задания</Text>
                 <AddFileInput name={'Загрузить файл'} formId={'add-answer-form'} setIsEmpty={setIsEmptyFile} accept=".pdf"/>
                 <SubmitButton color={'bright'} text={'Добавить'}/>
             </form>
@@ -501,17 +512,18 @@ function RemoveAnswer() {
     const [isOpen, setIsOpen] = useState(false);
     
     return (
-        <div className='py-5'>
+        <div>
             <div className='flex justify-between items-center'>
-                <p>Удалить ответ</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Удалить ответ</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'remove-answer-form'} onSubmit={function (e){
                 dataProc('removeanswer', 'Ответ успешно удален', 'Произошла ошибка', 'Произошла ошибка', e, 'remove-answer-form', 'DELETE');
             }}>
-                <p>Введите ID задания</p>
+                <Text>Введите ID задания</Text>
                 <OnceInput placeholder={'Task ID'} name={'id'}/>
                 <SubmitButton color={'bright'} text={'Удалить'}/>
             </form>
@@ -524,17 +536,18 @@ function EditAnswer() {
     const [isEmptyFile, setIsEmptyFile] = useState(true);
     
     return (
-        <div className='py-5'>
+        <div>
             <div className='flex justify-between items-center'>
-                <p>Редактиовать ответ</p>
-                <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                <Text>Редактиовать ответ</Text>
+                <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
+                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button>
+                </button> */}
             </div>
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'edit-answer-form'} onSubmit={function (e){
                 dataProc('editanswer', 'Ответ успешно отредактирован', 'Произошла ошибка', 'Произошла ошибка', e, 'edit-answer-form', 'POST', !isEmptyFile);
             }}>
-                <p>Введите ID задания</p>
+                <Text>Введите ID задания</Text>
                 <OnceInput placeholder={'Task ID'} name={'id'}/>
                 <AddFileInput name={'Загрузить файл'} formId={'edit-answer-form'} accept=".pdf" setIsEmpty={setIsEmptyFile}/>
                 <SubmitButton color={'bright'} text={'Редактировать'}/>
@@ -556,18 +569,18 @@ function ShowAllAnswers() {
     return (
         <div className='flex flex-col gap-y-5'>
             <div className='flex justify-between items-center'>
-                <button className='w-full text-left' onClick={() => {showData(); setIsOpen(!isOpen)}}>Показать все ответы</button>
+                <button className='w-full text-left font-sans text-xl max-md:text-base max-sm:text-xs' onClick={() => {showData(); setIsOpen(!isOpen)}}>Показать все ответы</button>
             </div>
-            <ul className={`flex flex-col divide-y-[1px] divide-medium ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'}`}>
+            <ul className={`flex flex-col divide-y-[1px] divide-medium ${isOpen ? 'h-auto flex' : 'h-0 overflow-hidden none'} w-full overflow-x-scroll`}>
                 <li className="grid grid-cols-2 py-3">
-                    <p className="justify-self-center">id</p>
-                    <p className="justify-self-center">nameFile</p>
+                    <TableText>id</TableText>
+                    <TableText>nameFile</TableText>
                 </li>
                 {tableData.map(row => {
                     return (
                         <li className="grid grid-cols-2 py-3 items-center" key={row.id}>
-                            <p className="justify-self-center">{row.id}</p>
-                            <p className="justify-self-center">{row.nameFile}</p>
+                            <TableText>{row.id}</TableText>
+                            <TableText>{row.nameFile}</TableText>
                         </li>
                     )
                 })}

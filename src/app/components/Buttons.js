@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 function downloadFile(fileName, url) {
     const a = document.createElement('a');
@@ -93,5 +94,13 @@ export function SubmitButton ({color, text, id}) {
         <>
             {id ? <button type={'submit'} className={`py-2.5 px-5 rounded-[10px] bg-${color}`} id={id}>{text}</button> : <button type={'submit'} className={`py-2.5 px-5 rounded-[10px] bg-${color}`}>{text}</button>}
         </>
+    )
+}
+
+export function ArrowButton ({ onClick, isOpen }) {
+    return (
+        <button onClick={onClick} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+            {window.innerWidth > 640 ? <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/> : <Image alt='arrow' src={'/Arrow.svg'} height={26} width={26}/>}
+        </button>
     )
 }

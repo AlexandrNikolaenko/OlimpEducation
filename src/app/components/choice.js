@@ -130,8 +130,6 @@ export default function ChoiceAndTasks(){
         otherCriteria.hardLevel = value;
     }
 
-    console.log(criteria, choiceTags, otherCriteria);
-
     if (window.innerWidth > 1145) {
         return (
             <>
