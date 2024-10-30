@@ -31,7 +31,7 @@ export default function PersonalPage() {
     } else {
         return (
             <div className="wrapper mx-auto min-h-screen pt-24 max-[1280px]:px-5">
-                <h1 className="text-bright font-help text-3xl max-[834px]:text-2xl max-[380]:text-lg pb-10">Управление приложением</h1>
+                <h1 className="text-bright font-help text-3xl max-tab:text-2xl max-mob:text-lg pb-10">Управление приложением</h1>
                 <div className={'flex flex-col border-y-[1px] divide-y-[1px] divide-white'}>
                     <ControlAccUsers />
                     <ControlTasks />
@@ -40,26 +40,3 @@ export default function PersonalPage() {
         )
     }
 }
-
-
-
-// Работа с таблицей Users:
-
-// Удаление пользователей
-// Добавление пользователей
-// Предоставление прав админа
-// Выведение всей таблицы
-
-// Работа с таблицей Answers:
-
-// Добавление нового ответа
-// Удаление ответа
-// Редактирование ответа
-// Выведение всей таблицы
-
-// Работа с таблицей Tasks:
-
-// Добавление нового задания
-// Удаление задания
-// Редактирование задания
-// Выведение всей таблицы

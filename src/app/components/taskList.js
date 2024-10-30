@@ -27,7 +27,7 @@ export default function TaskList({_class, level, tags}){
     useEffect(() => {
         async function getData() {
                 try {
-                    await fetch(`http://localhost:5000/?class=${_class}&level=${level}&tags=${tags.join(',')}`, {method: 'GET'})
+                    await fetch(`http://localhost:5000/?class=${_class}&level=${level}&tags=${tags.join(',')}`, {method: 'GET', cache: 'no-cache'})
                     .then(res => res.json())
                     .then(data => {
                         if (data[0] && data.length == result.length){

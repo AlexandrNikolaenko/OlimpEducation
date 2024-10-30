@@ -26,6 +26,10 @@ module.exports = {
         'sans': ['"Tenor sans"', 'sans-serif'],
         'serif': ['Lora']
       },
+      screens: {
+        'tab': "834px",
+        'mob': "380px"
+      }
     },
   },
   plugins: [],

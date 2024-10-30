@@ -4,7 +4,7 @@ import { TaskImage } from "../../components/taskImage";
 import { InfoPart, ButtonPart } from "../../components/infoParts";
 
 export default async function Page({params}) {
-    let url, answerUrl;
+    let urls, answerUrl;
     let id = params.taskid[0];
 
     if (!isNaN(id)){
@@ -13,16 +13,16 @@ export default async function Page({params}) {
     
         await fetch(`http://localhost:5000/task?id=${id}`, {method: 'GET', cache: 'no-cache'})
                 .then(res => res.json())
-                .then(data => url = data.url);
+                .then(data => urls = data.url);
     }
 
-    console.log(url);
+    console.log(urls)
     
     return (
         <div className="wrapper mx-auto flex flex-col gap-y-[30px] max-[700px]:gap-y-5 px-0 max-[1280px]:px-5">
-            <InfoPart id={id} params={params} url={url}/>
-            <TaskImage url={url} />
-            <ButtonPart params={params} url={url} answerUrl={answerUrl}/>
+            <InfoPart id={id} params={params} url={urls}/>
+            {urls.map(url => <TaskImage url={url} key={url}/>)}
+            <ButtonPart params={params} url={urls} answerUrl={answerUrl}/>
         </div>
     )
 }

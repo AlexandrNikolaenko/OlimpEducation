@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { SubmitButton, ArrowButton } from "../components/Buttons";
 import { host } from "../components/host";
+import { fromJSON } from "postcss";
 
 export function ControlAccUsers() {
     const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ export function ControlAccUsers() {
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
                 </button> */}
             </div>
-            <div className={`flex-col gap-y-2.5 px-7 ${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} transition-all duration-200`}>
+            <div className={`flex-col gap-y-2.5 px-7 max-tab:px-5 max-mob:px-3 ${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} transition-all duration-200`}>
                 <AddUser />
                 <RemoveUser />
                 <TakeAdminRights />
@@ -29,11 +30,11 @@ export function ControlAccUsers() {
 // text-xl max-[834px]:text-base max-[380px]:text-xs
 
 function Text({children}) {
-    return <p className="font-sans text-xl max-md:text-base max-sm:text-xs">{children}</p>
+    return <p className="font-sans text-xl max-tab:text-base max-mob:text-xs">{children}</p>
 }
 
 function TableText({children}) {
-    return <div className="w-full overflow-hidden"><p className="font-serif text-base max-md:text-xs max-sm:text-[8px] text-center">{children}</p></div>
+    return <div className="w-full overflow-hidden"><p className="font-serif text-base max-tab:text-xs max-mob:text-[8px] text-center">{children}</p></div>
 }
 
 function dataProc(url, successMessage, noSuccessMessage, errMessage, event, id, method, isFile=false) {
@@ -41,7 +42,7 @@ function dataProc(url, successMessage, noSuccessMessage, errMessage, event, id, 
     let formData = new FormData(document.getElementById(id));
     let relFormData = formData;
     formData = Object.fromEntries(formData);
-    sendFormData(`http://${host}:5000/${url}`, formData, successMessage, noSuccessMessage, errMessage, method, isFile, relFormData);
+    sendFormData(`http://${host}:5000/${url}`, formData, successMessage, noSuccessMessage, errMessage, method, isFile,  relFormData);
 }
 
 function sendFormData (url, formData, successMessage, noSuccessMessage, errMessage, method, isFile, relFormData) {
@@ -77,6 +78,27 @@ function sendFormData (url, formData, successMessage, noSuccessMessage, errMessa
             alert(errMessage);
             console.log(err);
         });
+        // for (let i = 0; i < formData.fileAmount; i++){
+        //     let newData = relFormData;
+        //     for (let j = 0; j < formData.fileAmount; j++) {
+        //         if (i != j) newData.delete(`file${j}`);
+        //     }
+        //     console.log(relFormData);
+        //     console.log(Object.fromEntries(newData));
+        //     fetch(`${url}file`, {
+        //         method: method,
+        //         body: relFormData
+        //     })
+        //     .then((res) => res.json())
+        //     .then((data) => { 
+        //         if (data.res == 'success') alert('Файл успешно добавлен')
+        //         else alert(noSuccessMessage)
+        //     })
+        //     .catch((err) => {
+        //         alert(errMessage);
+        //         console.log(err);
+        //     });
+        // }
     }
 }
 
@@ -185,9 +207,8 @@ function TakeAdminRights () {
                     } else {
                         dataProc('recallrights', 'Запрос выполнен успешно', 'Запрос не выполнен', 'Ошибка запроса', e, 'admin-user-form', 'POST')
                     }
-                    
                 }}>
-                <div className='w-full flex flex-row max-md:flex-col gap-x-5 items-center max-w-[752.33px]'>
+                <div className='w-full flex flex-row max-md:flex-col gap-5 items-center max-w-[752.33px]'>
                     <InputField placeholder={'User ID'} name={'userid'}/>
                     <span className='w-fit'>or</span>
                     <InputField placeholder={'Email'} name={'email'}/>
@@ -254,7 +275,7 @@ export function ControlTasks() {
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
                 </button> */}
             </div>
-            <div className={`flex ${isOpen ? 'h-auto flex pt-1' : 'h-0 overflow-hidden none pt-0'} flex-col px-7`}>
+            <div className={`flex ${isOpen ? 'h-auto flex pt-1' : 'h-0 overflow-hidden none pt-0'} flex-col px-7 max-tab:px-5 max-mob:px-3`}>
                 <ControlTableTask />
                 <ControlTableAnswers />
             </div>
@@ -274,7 +295,7 @@ function ControlTableTask () {
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
                 </button> */}
             </div>
-            <div className={`${isOpen ? 'h-auto flex gap-3' : 'h-0 overflow-hidden none'} flex-col pt-2.5 px-6`}>
+            <div className={`${isOpen ? 'h-auto flex gap-3' : 'h-0 overflow-hidden none'} flex-col pt-2.5 px-6 max-tab:px-4 max-mob:px-2`}>
                 <AddTask />
                 <RemoveTask />
                 <EditTask />
@@ -324,23 +345,70 @@ function AddTags() {
 
 }
 
-function AddFileInput({ name, formId, setIsEmpty, accept=".jpg" }) {
-    const fileForm = useRef(null);
+function Option ({value}) {
+    return <option value={value} className="bg-main border-super-light">{value}</option>
+}
+
+function AddFileInput({ name, formId, setIsEmpty, accept=".jpg", multiple=false }) {
     const [nameFile, setNameFile] = useState(name);
+    const [fileAmount, setFileAmount] = useState(1); 
+
+    // let count = [];
+    // for (let i = 0; i < fileAmount; i++) {
+    //     count.push(i);
+    // }
 
     return (
         <>
-        <button className="w-full px-5 py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed" onClick={
-            (e) => {
+            {/* <select placeholder={'Files amount'} name={'fileAmount'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'} autocomplete="off" onChange={(e) => {
                 e.preventDefault();
-                fileForm.current.click();
-            }
-        }>{nameFile}</button>
-        <input type="file" ref={fileForm} accept={accept} name={'file'} id={formId} placeholder="Загрузить файл" className="w-full px- py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed hidden" multiple={false} autocomplete="off" onChange={(e) => {
-            e.preventDefault();
-            setNameFile(e.target.files[0].name);
-            setIsEmpty(false);
-        }}></input></>
+                if (e.target.value == '') {
+                    setFileAmount(1);
+                    return;
+                }
+                if (!isNaN(Number(e.target.value))) setFileAmount(Math.min(Number(e.target.value), 4));
+                else {
+                    alert('Введите число');
+                }                
+            }}>
+                <Option value={1}/>
+                <Option value={2}/>
+                <Option value={3}/>
+                <Option value={4}/>
+            </select> */}
+            <button className="w-full px-5 py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed" onClick={
+                (e) => {
+                    e.preventDefault();
+                    document.getElementById(formId).click();
+                }
+            }>{nameFile}</button>
+            <input type="file" accept={accept} name={`${multiple ? 'files[]' : 'file'}`} id={formId} placeholder="Загрузить файл" className="w-full px- py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed hidden" multiple={multiple} autocomplete="off" onChange={(e) => {
+                e.preventDefault();
+                let names = [];
+                Array.from(e.target.files).forEach(file => names.push(file.name));
+                names = names.join(', ');
+                setNameFile(names);
+                setIsEmpty(false);
+            }}></input>
+            {/* {count.map(elem => {
+                return (
+                    <div key={elem} className="w-full h-auto">
+                        <button className="w-full px-5 py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed" onClick={
+                            (e) => {
+                                e.preventDefault();
+                                document.getElementById(`${formId}${elem}`).click();
+                            }
+                        }>{nameFile}</button>
+                        <input type="file" accept={accept} name={`file${elem}`} id={`${formId}${elem}`} placeholder="Загрузить файл" className="w-full px- py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed hidden" multiple={multiple} autocomplete="off" onChange={(e) => {
+                            e.preventDefault();
+                            setNameFile(e.target.files[0].name);
+                            setIsEmpty(false);
+                        }}></input>
+                    </div>
+                )
+            })} */}
+            
+        </>
     )
 }
 
@@ -353,9 +421,6 @@ function AddTask() {
             <div className='flex justify-between items-center'>
                 <Text>Добавить задание</Text>
                 <ArrowButton onClick={() => setIsOpen(!isOpen)} isOpen={isOpen} />
-                {/* <button onClick={() => setIsOpen(!isOpen)} className={`${isOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
-                    <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
-                </button> */}
             </div>
             
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden hidden'} flex-col gap-y-5 items-start`} id={'add-task-form'} onSubmit={function (e){
@@ -367,13 +432,14 @@ function AddTask() {
                     <InputField placeholder={'Level'} name={'level'}/>
                 </InputGridList>
                 <AddTags/>
-                <Text>Добавьте файл в формате .jpg, имя файла должно быть следующим: ID*id задания*, например ID0001.jpg</Text>
-                <AddFileInput name={'Загрузить файл'} formId={'inputfile1'} setIsEmpty={setIsEmptyFile}/>
+                <Text>Добавьте файл в формате .jpg, имя файла должно быть следующим: ID*id задания*, например ID0001.jpg или ID0001(1).jpg</Text>
+                <AddFileInput name={'Загрузить файл'} formId={'inputfile1'} setIsEmpty={setIsEmptyFile} multiple={true}/>
                 <SubmitButton color={'bright'} text={'Добавить'}/>
             </form>
         </div>
     )
 }
+
 function RemoveTask() {
     const [isOpen, setIsOpen] = useState(false);
     
@@ -417,7 +483,7 @@ function EditTask() {
                     <InputField placeholder={'Level'} name={'level'}/>
                 </InputGridList>
                 <AddTags />
-                <AddFileInput name='Загрузить файл' formId={'inputfile2'} setIsEmpty={setIsEmptyFile}/>
+                <AddFileInput name='Загрузить файл' formId={'inputfile2'} setIsEmpty={setIsEmptyFile} multiple={true}/>
                 <SubmitButton color={'bright'} text={'Редактировать'}/>
             </form>
         </div>
@@ -475,7 +541,7 @@ function ControlTableAnswers () {
                     <Image alt='arrow' src={'/Arrow.svg'} height={43} width={43}/>
                 </button> */}
             </div>
-            <div className={`flex ${isOpen ? 'h-auto flex gap-y-3' : 'h-0 overflow-hidden none'} flex-col pt-2.5 px-6`}>
+            <div className={`flex ${isOpen ? 'h-auto flex gap-y-3' : 'h-0 overflow-hidden none'} flex-col pt-2.5 px-6 max-tab:px-4 max-mob:px-2`}>
                 <AddAnswer />
                 <RemoveAnswer />
                 <EditAnswer />
@@ -501,13 +567,14 @@ function AddAnswer() {
             <form className={`${isOpen ? 'h-auto flex ' : 'h-0 overflow-hidden none'} flex-col gap-y-5 items-start`} id={'add-answer-form'} onSubmit={function (e){
                 dataProc('addanswer', 'Ответ успешно добавлен', 'Произошла ошибка', 'Произошла ошибка', e, 'add-answer-form', 'POST', !isEmptyFile);
             }}>
-                <Text>Добавьте файл, названный так, чтобы название оканчивалось номером задания</Text>
+                <Text>Добавьте файл в формате pdf, названный так, чтобы название оканчивалось номером задания</Text>
                 <AddFileInput name={'Загрузить файл'} formId={'add-answer-form'} setIsEmpty={setIsEmptyFile} accept=".pdf"/>
                 <SubmitButton color={'bright'} text={'Добавить'}/>
             </form>
         </div>
     )
 }
+
 function RemoveAnswer() {
     const [isOpen, setIsOpen] = useState(false);
     
