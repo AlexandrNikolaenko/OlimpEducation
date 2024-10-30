@@ -138,7 +138,7 @@ export default function ChoiceAndTasks(){
                 <div className="w-[566px] flex flex-col gap-5">
                 <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите класс</p>
                 <ChoiceClass displayWidth={'large'} changeValue={changeClass}/>
-                <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите сложность</p>
+                <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите сложность (рекомендуем начинать с 1)</p>
                 <ChoiceLevel displayWidth={'large'} changeValue={changeLevel}/>
                 <p className="font-sans text-2xl/[25px] tracking-[0.02em]">Выберите интересующие теги</p>
                 <ChoiceTags displayWidth={'large'} changeValue={makeChoiceTags}/>
@@ -174,7 +174,7 @@ export default function ChoiceAndTasks(){
                     <div className="w-full flex flex-col gap-5 max-[400px]:gap-2.5">
                         <p className="font-sans text-sm/[25px] tracking-[0.02em]">Выберите класс</p>
                         <ChoiceClass displayWidth={'little'} changeValue={changeClass}/>
-                        <p className="font-sans text-sm/[25px] tracking-[0.02em]">Выберите сложность</p>
+                        <p className="font-sans text-sm/[25px] tracking-[0.02em]">Выберите сложность (рекомендуем начинать с 1)</p>
                         <ChoiceLevel displayWidth={'little'} changeValue={changeLevel}/>
                         <p className="font-sans text-sm/[25px] tracking-[0.02em]">Выберите интересующие теги</p>
                         <ChoiceTags displayWidth={'little'} changeValue={makeChoiceTags}/>
@@ -182,11 +182,9 @@ export default function ChoiceAndTasks(){
                         <button className="font-sans text-sm/[25px] font-normal tracking-[0.02em] px-[15px] py-[6px] bg-bright rounded-[10px] w-max hover:bg-light-main transition-colors duration-500 " onClick={() => {
                                 setCriteria({class: otherCriteria.class, hardLevel: otherCriteria.hardLevel, tags: choiceTags});
                                 document.getElementById('data-section').scrollIntoView({behavior: 'smooth'});
-
                             }}>Найти</button>
                     </div>
                 </div>
-                
             </section>
             <section id='data-section' className="wrapper mx-auto py-[60px] bg-local min-h-screen bg-center bg-no-repeat flex flex-col  gap-y-4 px-0 max-[1280px]:px-5" style={{backgroundImage: `url(${path}ThirdFon.png)`}}>
                 {/* <input placeholder="Найти по ID" className="px-7 bg-transparent py-2.5 rounded-[10px] border-medium border-2 placeholder:font-serif palceholder:text-xl palceholder:font-normal"></input> */}
@@ -210,7 +208,7 @@ export default function ChoiceAndTasks(){
                                 <div className="flex flex-col gap-y-2.5">
                                     <p className="font-sans tracking-[0.02em] text-lg/[25px]">Выберите класс</p>
                                     <ChoiceClass displayWidth={'medium'} changeValue={changeClass}/>
-                                    <p className="font-sans tracking-[0.02em] text-lg/[25px]">Выберите сложность</p>
+                                    <p className="font-sans tracking-[0.02em] text-lg/[25px]">Выберите сложность (рекомендуем начинать с 1)</p>
                                     <ChoiceLevel displayWidth={'medium'} changeValue={changeLevel}/>
                                 </div>
                                 <button className="font-sans text-lg/[25px] font-normal tracking-[0.02em] px-5 py-2 bg-bright rounded-[10px] w-max hover:bg-light-main transition-colors duration-500 justify-self-end" onClick={() => {

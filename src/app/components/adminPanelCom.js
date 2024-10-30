@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { SubmitButton, ArrowButton } from "../components/Buttons";
 import { host } from "../components/host";
-import { fromJSON } from "postcss";
 
 export function ControlAccUsers() {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,9 +26,7 @@ export function ControlAccUsers() {
     )
 }
 
-// text-xl max-[834px]:text-base max-[380px]:text-xs
-
-function Text({children}) {
+export function Text({children}) {
     return <p className="font-sans text-xl max-tab:text-base max-mob:text-xs">{children}</p>
 }
 
@@ -78,27 +75,6 @@ function sendFormData (url, formData, successMessage, noSuccessMessage, errMessa
             alert(errMessage);
             console.log(err);
         });
-        // for (let i = 0; i < formData.fileAmount; i++){
-        //     let newData = relFormData;
-        //     for (let j = 0; j < formData.fileAmount; j++) {
-        //         if (i != j) newData.delete(`file${j}`);
-        //     }
-        //     console.log(relFormData);
-        //     console.log(Object.fromEntries(newData));
-        //     fetch(`${url}file`, {
-        //         method: method,
-        //         body: relFormData
-        //     })
-        //     .then((res) => res.json())
-        //     .then((data) => { 
-        //         if (data.res == 'success') alert('Файл успешно добавлен')
-        //         else alert(noSuccessMessage)
-        //     })
-        //     .catch((err) => {
-        //         alert(errMessage);
-        //         console.log(err);
-        //     });
-        // }
     }
 }
 
@@ -351,31 +327,9 @@ function Option ({value}) {
 
 function AddFileInput({ name, formId, setIsEmpty, accept=".jpg", multiple=false }) {
     const [nameFile, setNameFile] = useState(name);
-    const [fileAmount, setFileAmount] = useState(1); 
-
-    // let count = [];
-    // for (let i = 0; i < fileAmount; i++) {
-    //     count.push(i);
-    // }
 
     return (
         <>
-            {/* <select placeholder={'Files amount'} name={'fileAmount'} className={'w-full px-5 py-2.5 rounded-[10px] bg-transparent border-super-light border-2'} autocomplete="off" onChange={(e) => {
-                e.preventDefault();
-                if (e.target.value == '') {
-                    setFileAmount(1);
-                    return;
-                }
-                if (!isNaN(Number(e.target.value))) setFileAmount(Math.min(Number(e.target.value), 4));
-                else {
-                    alert('Введите число');
-                }                
-            }}>
-                <Option value={1}/>
-                <Option value={2}/>
-                <Option value={3}/>
-                <Option value={4}/>
-            </select> */}
             <button className="w-full px-5 py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed" onClick={
                 (e) => {
                     e.preventDefault();
@@ -390,24 +344,6 @@ function AddFileInput({ name, formId, setIsEmpty, accept=".jpg", multiple=false 
                 setNameFile(names);
                 setIsEmpty(false);
             }}></input>
-            {/* {count.map(elem => {
-                return (
-                    <div key={elem} className="w-full h-auto">
-                        <button className="w-full px-5 py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed" onClick={
-                            (e) => {
-                                e.preventDefault();
-                                document.getElementById(`${formId}${elem}`).click();
-                            }
-                        }>{nameFile}</button>
-                        <input type="file" accept={accept} name={`file${elem}`} id={`${formId}${elem}`} placeholder="Загрузить файл" className="w-full px- py-10 rounded-[10px] bg-transparent border-super-light border-2 border-dashed hidden" multiple={multiple} autocomplete="off" onChange={(e) => {
-                            e.preventDefault();
-                            setNameFile(e.target.files[0].name);
-                            setIsEmpty(false);
-                        }}></input>
-                    </div>
-                )
-            })} */}
-            
         </>
     )
 }

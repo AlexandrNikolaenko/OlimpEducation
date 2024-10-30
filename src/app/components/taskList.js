@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import defChoice from "./defaultChoice";
+import { Text } from "./adminPanelCom";
 
 let choice = defChoice();
 
@@ -30,11 +31,12 @@ export default function TaskList({_class, level, tags}){
                     await fetch(`http://localhost:5000/?class=${_class}&level=${level}&tags=${tags.join(',')}`, {method: 'GET', cache: 'no-cache'})
                     .then(res => res.json())
                     .then(data => {
-                        if (data[0] && data.length == result.length){
+                        if (data.length != result.length) {
+                            setResult(data);
+                        } else if (data.length != 0 && result.length == data.length) {
                             let dif = false;
                             for (let i = 0; i < data.length; i++){
-                                if (data[i]._id != data[i]._id) {
-                                    console.log(data[i]._id != data[i]._ig);
+                                if (data[i]._id != result[i]._id) {
                                     dif = true;
                                     break;
                                 }
@@ -42,8 +44,6 @@ export default function TaskList({_class, level, tags}){
                             if (dif){
                                 setResult(data);
                             }
-                        }else if (data[0] && data.length != result.length){
-                            setResult(data);
                         }
                     });
                     if (window.localStorage.getItem('userId') && window.localStorage.getItem('userId') != 'undefined' && doneTasks == null) {
@@ -59,8 +59,15 @@ export default function TaskList({_class, level, tags}){
         getData();
     });
     return (
-        <ul className="flex flex-col gap-3 max-[840px]:grid max-[840px]:grid-cols-3 max-[730px]:grid-cols-2">
-            {result.map(task => window.localStorage.getItem('userId') && window.localStorage.getItem('userId') && doneTasks != null ? CreateTask(task, typeof doneTasks.find(i => i == task._id) != 'undefined') : CreateTask(task, false))}
-        </ul>
+        <>
+        {result.length == 0
+            ?
+            <Text>По вашему запросу ничего не было найдено</Text>
+            :
+            <ul className="flex flex-col gap-3 max-[840px]:grid max-[840px]:grid-cols-3 max-[730px]:grid-cols-2">
+               {result.map(task => window.localStorage.getItem('userId') && window.localStorage.getItem('userId') && doneTasks != null ? CreateTask(task, typeof doneTasks.find(i => i == task._id) != 'undefined') : CreateTask(task, false))}
+            </ul>
+          }
+        </>
     );
 }
